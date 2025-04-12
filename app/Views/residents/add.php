@@ -6,7 +6,7 @@
         <h3 class="card-title">Add New Resident</h3>
     </div>
     <div class="card-body">
-        <form action="<?= base_url('residents/save') ?>" method="post">
+        <form action="<?= base_url('admin/save') ?>" method="post">
             <div class="row">
                 <div class="col-md-6">
                     <div class="form-group">
@@ -86,7 +86,7 @@
             </div>
             <div class="form-group">
                 <button type="submit" class="btn btn-primary">Save Resident</button>
-                <a href="<?= base_url('residents') ?>" class="btn btn-default">Cancel</a>
+                <a href="<?= base_url('admin') ?>" class="btn btn-default">Cancel</a>
             </div>
         </form>
     </div>

@@ -41,7 +41,7 @@
                 </button>
             </div>
             <div class="modal-body">
-                <form action="<?= base_url('residents/saveHousehold') ?>" method="post">
+                <form action="<?= base_url('admin/saveHousehold') ?>" method="post">
                     <div class="form-group">
                         <label>Household Number</label>
                         <input type="text" class="form-control" name="household_number" required>

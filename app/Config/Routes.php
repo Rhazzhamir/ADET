@@ -30,12 +30,12 @@ $routes->get('/', 'Dashboard::index');
 $routes->get('dashboard', 'Dashboard::index');
 $routes->get('home', 'Home::index');
 
-// Residents Routes
-$routes->get('residents', 'Residents::index');
-$routes->get('residents/add', 'Residents::add');
-$routes->post('residents/save', 'Residents::save');
-$routes->get('residents/households', 'Residents::households');
-$routes->post('residents/saveHousehold', 'Residents::saveHousehold');
+// Admin Routes
+$routes->get('admin', 'Residents::index');
+$routes->get('admin/add', 'Residents::add');
+$routes->post('admin/save', 'Residents::save');
+$routes->get('admin/households', 'Residents::households');
+$routes->post('admin/saveHousehold', 'Residents::saveHousehold');
 
 // Budget Routes
 $routes->get('budget', 'Budget::index');
@@ -55,17 +55,13 @@ $routes->get('legal/terms', 'Legal::terms');
 // Settings Routes
 $routes->get('settings', 'Settings::index');
 
-// Authentication Routes
-$routes->get('auth/login', 'Auth::login');
-$routes->post('auth/login', 'Auth::login');
-$routes->get('auth/register', 'Auth::register');
-$routes->post('auth/register', 'Auth::register');
-$routes->get('auth/logout', 'Auth::logout');
-$routes->get('auth/admin_login', 'Auth::admin_login');
-$routes->post('auth/admin_login', 'Auth::admin_login');
-
 // Dashboard Routes
-$routes->get('dashboard/resident', 'Dashboard::resident');
+$routes->get('dashboard/resident', 'Dashboard::residentDashboard');
+
+// Auth Routes
+$routes->get('auth/resident/login', 'Auth::residentLogin');
+$routes->get('auth/resident/register', 'Auth::residentRegister');
+$routes->get('auth/admin_login', 'Auth::adminLogin');
 
 /*
  * --------------------------------------------------------------------

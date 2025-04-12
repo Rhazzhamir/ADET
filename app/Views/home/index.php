@@ -384,8 +384,8 @@
                     </li>
                     <li class="nav-item ms-2">
                         <button class="btn btn-link nav-link" id="themeToggle">
-        <i class="fas fa-sun"></i>
-    </button>
+                            <i class="fas fa-sun"></i>
+                        </button>
                     </li>
                 </ul>
             </div>
@@ -399,8 +399,8 @@
             <h1 class="display-4 fw-bold">Barangay Information and Management System</h1>
             <p class="lead">Streamlining barangay operations through efficient digital management</p>
             <div class="mt-4">
-                <a href="<?= base_url('auth/login') ?>" class="btn btn-primary btn-lg me-2">Login</a>
-                <a href="<?= base_url('auth/register') ?>" class="btn btn-outline-light btn-lg">Register</a>
+                <a href="<?= base_url('auth/resident/login') ?>" class="btn btn-primary btn-lg me-2">Login</a>
+                <a href="<?= base_url('auth/resident/register') ?>" class="btn btn-outline-light btn-lg">Register</a>
             </div>
         </div>
     </section>

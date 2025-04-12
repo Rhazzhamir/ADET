@@ -74,7 +74,7 @@
                             Resident Records
                         </h3>
                         <div class="card-tools">
-                            <a href="<?= site_url('residents/add') ?>" class="btn btn-tool">
+                            <a href="<?= site_url('admin/add') ?>" class="btn btn-tool">
                                 <i class="fas fa-plus"></i> Add New
                             </a>
                         </div>

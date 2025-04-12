@@ -34,12 +34,12 @@ class Residents extends BaseController
     public function save()
     {
         // Handle resident save logic here
-        return redirect()->to('/residents');
+        return redirect()->to('/admin');
     }
 
     public function saveHousehold()
     {
         // Handle household save logic here
-        return redirect()->to('/residents/households');
+        return redirect()->to('/admin/households');
     }
 } 

@@ -511,8 +511,8 @@
                         </li>
 
                         <!-- Residents -->
-                        <li class="nav-item has-treeview <?= strpos(current_url(), 'residents') !== false ? 'menu-open' : '' ?>">
-                            <a href="#" class="nav-link <?= strpos(current_url(), 'residents') !== false ? 'active' : '' ?>">
+                        <li class="nav-item has-treeview <?= strpos(current_url(), 'admin') !== false ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= strpos(current_url(), 'admin') !== false ? 'active' : '' ?>">
                                 <i class="nav-icon fas fa-users"></i>
                                 <p>
                                     Residents
@@ -521,19 +521,19 @@
                             </a>
                             <ul class="nav nav-treeview">
                                 <li class="nav-item">
-                                    <a href="<?= base_url('residents') ?>" class="nav-link">
+                                    <a href="<?= base_url('admin') ?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>All Residents</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= base_url('residents/add') ?>" class="nav-link">
+                                    <a href="<?= base_url('admin/add') ?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
-                                        <p>Add New Resident</p>
+                                        <p>Add Resident</p>
                                     </a>
                                 </li>
                                 <li class="nav-item">
-                                    <a href="<?= base_url('residents/households') ?>" class="nav-link">
+                                    <a href="<?= base_url('admin/households') ?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Households</p>
                                     </a>
