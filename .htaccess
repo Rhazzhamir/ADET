@@ -1,0 +1,20 @@
+# Remove index.php from URLs
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /ADET/
+    
+    # Redirect Trailing Slashes...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_URI} (.+)/$
+    RewriteRule ^ %1 [L,R=301]
+    
+    # Handle Front Controller...
+    RewriteCond %{REQUEST_FILENAME} !-d
+    RewriteCond %{REQUEST_FILENAME} !-f
+    RewriteRule ^ index.php [QSA,L]
+</IfModule>
+
+# PHP Error Settings
+php_value display_errors On
+php_value display_startup_errors On
+php_value error_reporting E_ALL 

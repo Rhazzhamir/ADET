@@ -57,6 +57,7 @@ $routes->get('settings', 'Settings::index');
 
 // Dashboard Routes
 $routes->get('dashboard/resident', 'Dashboard::residentDashboard');
+$routes->get('dashboard/profile', 'Dashboard::profile');
 
 // Auth Routes
 $routes->get('auth/resident/login', 'Auth::residentLogin');
