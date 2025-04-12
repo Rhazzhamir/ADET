@@ -140,6 +140,21 @@
             background-color: var(--card-bg);
             border: 1px solid var(--border-color);
             color: var(--text-color);
+            border-radius: 8px;
+            padding: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .alert-danger {
+            background-color: #f8d7da;
+            border-color: #f5c6cb;
+            color: #721c24;
+        }
+
+        .alert-success {
+            background-color: #d4edda;
+            border-color: #c3e6cb;
+            color: #155724;
         }
 
         .theme-toggle {
@@ -219,7 +234,7 @@
                     </div>
                 <?php endif; ?>
 
-                <form action="<?= base_url('auth/admin/login') ?>" method="post">
+                <form action="<?= base_url('auth/processAdminLogin') ?>" method="post">
                     <div class="mb-3">
                         <label for="username" class="form-label">Username</label>
                         <div class="input-group">

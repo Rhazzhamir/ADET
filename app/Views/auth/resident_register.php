@@ -169,10 +169,16 @@
     </style>
 </head>
 <body>
+    <!-- Include the alerts partial -->
+    <?= view('partials/alerts') ?>
+
     <!-- Auth Links -->
     <div class="auth-links">
         <a href="<?= base_url('auth/admin_login') ?>" class="auth-link">
             <i class="fas fa-user-shield me-1"></i>Admin Login
+        </a>
+        <a href="<?= base_url('home') ?>" class="auth-link">
+            <i class="fas fa-home me-1"></i>Back to Home
         </a>
     </div>
 
@@ -187,40 +193,72 @@
                 <p class="text-muted">Create your resident account</p>
             </div>
             
-            <form action="" method="POST">
+            <form action="<?= base_url('auth/processResidentRegistration') ?>" method="POST">
                 <div class="mb-3">
                     <label for="fullName" class="form-label">Full Name</label>
-                    <input type="text" class="form-control" id="fullName" name="fullName" placeholder="Enter your full name" required>
+                    <input type="text" class="form-control <?= session('errors.fullName') ? 'is-invalid' : '' ?>" 
+                           id="fullName" name="fullName" placeholder="Enter your full name" 
+                           value="<?= old('fullName') ?>" required>
+                    <?php if (session('errors.fullName')): ?>
+                        <div class="invalid-feedback"><?= session('errors.fullName') ?></div>
+                    <?php endif; ?>
                 </div>
                 
                 <div class="mb-3">
                     <label for="email" class="form-label">Email Address</label>
-                    <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
+                    <input type="email" class="form-control <?= session('errors.email') ? 'is-invalid' : '' ?>" 
+                           id="email" name="email" placeholder="Enter your email" 
+                           value="<?= old('email') ?>" required>
+                    <?php if (session('errors.email')): ?>
+                        <div class="invalid-feedback"><?= session('errors.email') ?></div>
+                    <?php endif; ?>
                 </div>
                 
                 <div class="mb-3">
                     <label for="phone" class="form-label">Phone Number</label>
-                    <input type="tel" class="form-control" id="phone" name="phone" placeholder="Enter your phone number" required>
+                    <input type="tel" class="form-control <?= session('errors.phone') ? 'is-invalid' : '' ?>" 
+                           id="phone" name="phone" placeholder="Enter your phone number" 
+                           value="<?= old('phone') ?>" required>
+                    <?php if (session('errors.phone')): ?>
+                        <div class="invalid-feedback"><?= session('errors.phone') ?></div>
+                    <?php endif; ?>
                 </div>
                 
                 <div class="mb-3">
                     <label for="address" class="form-label">Address</label>
-                    <input type="text" class="form-control" id="address" name="address" placeholder="Enter your address" required>
+                    <input type="text" class="form-control <?= session('errors.address') ? 'is-invalid' : '' ?>" 
+                           id="address" name="address" placeholder="Enter your address" 
+                           value="<?= old('address') ?>" required>
+                    <?php if (session('errors.address')): ?>
+                        <div class="invalid-feedback"><?= session('errors.address') ?></div>
+                    <?php endif; ?>
                 </div>
                 
                 <div class="mb-3">
                     <label for="password" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="password" name="password" placeholder="Create a password" required>
+                    <input type="password" class="form-control <?= session('errors.password') ? 'is-invalid' : '' ?>" 
+                           id="password" name="password" placeholder="Create a password" required>
+                    <?php if (session('errors.password')): ?>
+                        <div class="invalid-feedback"><?= session('errors.password') ?></div>
+                    <?php endif; ?>
                 </div>
                 
                 <div class="mb-3">
                     <label for="confirmPassword" class="form-label">Confirm Password</label>
-                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                    <input type="password" class="form-control <?= session('errors.confirmPassword') ? 'is-invalid' : '' ?>" 
+                           id="confirmPassword" name="confirmPassword" placeholder="Confirm your password" required>
+                    <?php if (session('errors.confirmPassword')): ?>
+                        <div class="invalid-feedback"><?= session('errors.confirmPassword') ?></div>
+                    <?php endif; ?>
                 </div>
                 
                 <div class="mb-3 form-check">
-                    <input type="checkbox" class="form-check-input" id="terms" name="terms" required>
+                    <input type="checkbox" class="form-check-input <?= session('errors.terms') ? 'is-invalid' : '' ?>" 
+                           id="terms" name="terms" required>
                     <label class="form-check-label" for="terms">I agree to the Terms and Conditions</label>
+                    <?php if (session('errors.terms')): ?>
+                        <div class="invalid-feedback d-block"><?= session('errors.terms') ?></div>
+                    <?php endif; ?>
                 </div>
                 
                 <button type="submit" class="btn btn-primary btn-register">Register</button>

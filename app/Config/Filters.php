@@ -12,6 +12,8 @@ use CodeIgniter\Filters\InvalidChars;
 use CodeIgniter\Filters\PageCache;
 use CodeIgniter\Filters\PerformanceMetrics;
 use CodeIgniter\Filters\SecureHeaders;
+use App\Filters\ResidentAuthFilter;
+use App\Filters\AdminAuthFilter;
 
 class Filters extends BaseFilters
 {
@@ -34,6 +36,8 @@ class Filters extends BaseFilters
         'forcehttps'    => ForceHTTPS::class,
         'pagecache'     => PageCache::class,
         'performance'   => PerformanceMetrics::class,
+        'residentAuth'  => ResidentAuthFilter::class,
+        'adminAuth'     => AdminAuthFilter::class,
     ];
 
     /**
@@ -103,5 +107,22 @@ class Filters extends BaseFilters
      *
      * @var array<string, array<string, list<string>>>
      */
-    public array $filters = [];
+    public array $filters = [
+        'residentAuth' => [
+            'before' => [
+                'resident/*',          // Protect all routes starting with resident/
+                'dashboard/resident*',  // Protect resident dashboard routes
+                'dashboard/profile*'    // Protect profile routes
+            ]
+        ],
+        'adminAuth' => [
+            'before' => [
+                'admin/*',             // Protect all admin routes
+                'dashboard',           // Protect main dashboard
+                'budget/*',            // Protect budget routes
+                'officials/*',         // Protect officials routes
+                'settings'             // Protect settings
+            ]
+        ]
+    ];
 }

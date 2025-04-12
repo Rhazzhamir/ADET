@@ -366,6 +366,9 @@
     </style>
 </head>
 <body>
+    <!-- Include the alerts partial -->
+    <?= view('partials/alerts') ?>
+
     <!-- Sidebar -->
     <div class="sidebar">
         <div class="text-center mb-4">

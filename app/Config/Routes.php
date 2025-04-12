@@ -63,6 +63,13 @@ $routes->get('dashboard/profile', 'Dashboard::profile');
 $routes->get('auth/resident/login', 'Auth::residentLogin');
 $routes->get('auth/resident/register', 'Auth::residentRegister');
 $routes->get('auth/admin_login', 'Auth::adminLogin');
+$routes->post('auth/processResidentRegistration', 'Auth::processResidentRegistration');
+$routes->post('auth/processResidentLogin', 'Auth::processResidentLogin');
+$routes->post('auth/processAdminLogin', 'Auth::processAdminLogin');
+$routes->get('auth/logout', 'Auth::logout');
+
+// Resident Dashboard Routes
+$routes->get('resident/dashboard', 'Dashboard::residentDashboard');
 
 /*
  * --------------------------------------------------------------------

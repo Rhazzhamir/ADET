@@ -43,9 +43,9 @@
         }
 
         .login-container {
-            max-width: 400px;
-            margin: 100px auto;
-            padding: 20px;
+            max-width: 500px;
+            margin: 50px auto;
+            padding: 30px;
             background: var(--card-bg);
             border-radius: 10px;
             box-shadow: 0 0 20px var(--shadow-color);
@@ -63,11 +63,6 @@
 
         .login-header p {
             color: var(--muted-text);
-        }
-
-        .login-header img {
-            max-width: 150px;
-            margin-bottom: 20px;
         }
 
         .form-control {
@@ -98,20 +93,6 @@
             font-weight: 500;
         }
 
-        .forgot-password {
-            text-align: center;
-            margin-top: 15px;
-        }
-
-        .forgot-password a {
-            color: var(--link-color);
-            text-decoration: none;
-        }
-
-        .forgot-password a:hover {
-            color: var(--link-hover);
-        }
-
         .theme-toggle {
             position: fixed;
             top: 20px;
@@ -127,25 +108,6 @@
 
         .theme-toggle:hover {
             background-color: var(--input-bg);
-        }
-
-        .home-link {
-            position: fixed;
-            top: 20px;
-            right: 70px;
-            background: none;
-            border: none;
-            color: var(--text-color);
-            cursor: pointer;
-            padding: 10px;
-            border-radius: 50%;
-            transition: all 0.3s ease;
-            text-decoration: none;
-        }
-
-        .home-link:hover {
-            background-color: var(--input-bg);
-            color: var(--link-color);
         }
 
         .form-check-input {
@@ -168,7 +130,7 @@
 
         .register-link {
             text-align: center;
-            margin-top: 15px;
+            margin-top: 20px;
         }
 
         .register-link a {
@@ -207,10 +169,16 @@
     </style>
 </head>
 <body>
+    <!-- Include the alerts partial -->
+    <?= view('partials/alerts') ?>
+
     <!-- Auth Links -->
     <div class="auth-links">
         <a href="<?= base_url('auth/admin_login') ?>" class="auth-link">
             <i class="fas fa-user-shield me-1"></i>Admin Login
+        </a>
+        <a href="<?= base_url('home') ?>" class="auth-link">
+            <i class="fas fa-home me-1"></i>Back to Home
         </a>
     </div>
 
@@ -222,12 +190,12 @@
         <div class="login-container">
             <div class="login-header">
                 <h2>Resident Login</h2>
-                <p class="text-muted">Welcome back! Please login to your account.</p>
+                <p class="text-muted">Sign in to your resident account</p>
             </div>
             
-            <form action="" method="POST">
+            <form action="<?= base_url('auth/processResidentLogin') ?>" method="POST">
                 <div class="mb-3">
-                    <label for="email" class="form-label">Email address</label>
+                    <label for="email" class="form-label">Email Address</label>
                     <input type="email" class="form-control" id="email" name="email" placeholder="Enter your email" required>
                 </div>
                 
@@ -243,12 +211,8 @@
                 
                 <button type="submit" class="btn btn-primary btn-login">Login</button>
                 
-                <div class="forgot-password">
-                    <a href="#" class="text-decoration-none">Forgot Password?</a>
-                </div>
-                
                 <div class="register-link">
-                    <p>Don't have an account? <a href="/auth/resident/register">Register here</a></p>
+                    <p>Don't have an account? <a href="<?= base_url('auth/resident/register') ?>">Register here</a></p>
                 </div>
             </form>
         </div>
