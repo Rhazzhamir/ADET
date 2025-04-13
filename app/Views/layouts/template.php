@@ -636,6 +636,46 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            <!-- Alert Section -->
+            <div class="container-fluid">
+                <?php if (session()->getFlashdata('success')): ?>
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <?= session()->getFlashdata('success') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (session()->getFlashdata('error')): ?>
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <?= session()->getFlashdata('error') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (session()->getFlashdata('warning')): ?>
+                    <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                        <?= session()->getFlashdata('warning') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
+
+                <?php if (session()->getFlashdata('info')): ?>
+                    <div class="alert alert-info alert-dismissible fade show" role="alert">
+                        <?= session()->getFlashdata('info') ?>
+                        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                        </button>
+                    </div>
+                <?php endif; ?>
+            </div>
+            <!-- End Alert Section -->
+
             <!-- Content Header (Page header) -->
             <div class="content-header">
                 <div class="container-fluid">
@@ -722,6 +762,16 @@
                 const currentTheme = document.documentElement.getAttribute('data-theme');
                 const newTheme = currentTheme === 'light' ? 'dark' : 'light';
                 setTheme(newTheme);
+            });
+
+            // Auto-dismiss alerts after 5 seconds
+            $('.alert').each(function() {
+                const alert = $(this);
+                setTimeout(function() {
+                    alert.fadeOut(500, function() {
+                        $(this).remove();
+                    });
+                }, 5000);
             });
         });
 

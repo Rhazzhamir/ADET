@@ -668,20 +668,10 @@
                         </div>
                     </div>
                     <div class="profile-info">
-                        <h2>John Doe</h2>
-                        <p>Resident ID: RES-2023-001</p>
-                        <div class="profile-stats">
-                            <div class="profile-stat">
-                                <h5>5</h5>
-                                <p>Family Members</p>
-                            </div>
-                        </div>
-                        <div class="profile-upload-btn mt-3">
-                            <button class="btn btn-primary upload-btn">
-                                <i class="fas fa-camera me-2"></i>Upload Profile Picture
-                            </button>
-                            <input type="file" id="profileFileInput" class="d-none" accept="image/*">
-                        </div>
+                        <h2><?= strtoupper(esc($resident['full_name'])) ?></h2>
+                        <p><i class="fas fa-envelope me-2"></i><?= esc($resident['email']) ?></p>
+                        <p><i class="fas fa-phone me-2"></i><?= esc($resident['phone']) ?></p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i><?= esc($resident['address']) ?></p>
                     </div>
                 </div>
 
@@ -715,60 +705,47 @@
                                     <div class="col-md-6">
                                         <div class="profile-field">
                                             <div class="profile-field-label">Full Name</div>
-                                            <div class="profile-field-value">John Doe</div>
+                                            <div class="profile-field-value"><?= strtoupper(esc($resident['full_name'])) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="profile-field">
-                                            <div class="profile-field-label">Date of Birth</div>
-                                            <div class="profile-field-value">January 15, 1990</div>
+                                            <div class="profile-field-label">Email Address</div>
+                                            <div class="profile-field-value"><?= esc($resident['email']) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="profile-field">
-                                            <div class="profile-field-label">Gender</div>
-                                            <div class="profile-field-value">Male</div>
+                                            <div class="profile-field-label">Phone Number</div>
+                                            <div class="profile-field-value"><?= esc($resident['phone']) ?></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
+                                    <div class="col-md-12">
                                         <div class="profile-field">
-                                            <div class="profile-field-label">Civil Status</div>
-                                            <div class="profile-field-value">Married</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Nationality</div>
-                                            <div class="profile-field-value">Filipino</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Educational Attainment</div>
-                                            <div class="profile-field-value">College Graduate</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Occupation</div>
-                                            <div class="profile-field-value">Software Engineer</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Voter's ID</div>
-                                            <div class="profile-field-value">1234567890</div>
+                                            <div class="profile-field-label">Address</div>
+                                            <div class="profile-field-value"><?= esc($resident['address']) ?></div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="profile-actions">
-                                <button class="btn btn-primary">
-                                    <i class="fas fa-edit me-2"></i>Edit Information
-                                </button>
-                                <button class="btn btn-outline-primary">
-                                    <i class="fas fa-download me-2"></i>Download Profile
-                                </button>
+                            <div class="profile-section">
+                                <h5 class="profile-section-title">
+                                    <i class="fas fa-clock"></i> Account Information
+                                </h5>
+                                <div class="row">
+                                    <div class="col-md-6">
+                                        <div class="profile-field">
+                                            <div class="profile-field-label">Member Since</div>
+                                            <div class="profile-field-value"><?= date('F j, Y', strtotime($resident['created_at'])) ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-field">
+                                            <div class="profile-field-label">Last Updated</div>
+                                            <div class="profile-field-value"><?= date('F j, Y', strtotime($resident['updated_at'])) ?></div>
+                                        </div>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -778,80 +755,25 @@
                         <div class="profile-content">
                             <div class="profile-section">
                                 <h5 class="profile-section-title">
-                                    <i class="fas fa-user"></i> Basic Information
-                                </h5>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Full Name</div>
-                                            <div class="profile-field-value">John Doe</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Date of Birth</div>
-                                            <div class="profile-field-value">January 15, 1990</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Gender</div>
-                                            <div class="profile-field-value">Male</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Civil Status</div>
-                                            <div class="profile-field-value">Married</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Nationality</div>
-                                            <div class="profile-field-value">Filipino</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Educational Attainment</div>
-                                            <div class="profile-field-value">College Graduate</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Occupation</div>
-                                            <div class="profile-field-value">Software Engineer</div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Voter's ID</div>
-                                            <div class="profile-field-value">1234567890</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="profile-section">
-                                <h5 class="profile-section-title">
                                     <i class="fas fa-address-card"></i> Contact Information
                                 </h5>
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="profile-field">
                                             <div class="profile-field-label">Email Address</div>
-                                            <div class="profile-field-value">john.doe@example.com</div>
+                                            <div class="profile-field-value"><?= !empty($resident['email']) ? esc($resident['email']) : '' ?></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="profile-field">
                                             <div class="profile-field-label">Contact Number</div>
-                                            <div class="profile-field-value">+63 912 345 6789</div>
+                                            <div class="profile-field-value"><?= !empty($resident['phone']) ? esc($resident['phone']) : '' ?></div>
                                         </div>
                                     </div>
                                     <div class="col-md-12">
                                         <div class="profile-field">
                                             <div class="profile-field-label">Complete Address</div>
-                                            <div class="profile-field-value">123 Main Street, Barangay District IV, City, Province</div>
+                                            <div class="profile-field-value"><?= !empty($resident['address']) ? esc($resident['address']) : '' ?></div>
                                         </div>
                                     </div>
                                 </div>
@@ -864,25 +786,25 @@
                                     <div class="col-md-6">
                                         <div class="profile-field">
                                             <div class="profile-field-label">Household Number</div>
-                                            <div class="profile-field-value">HH-2023-001</div>
+                                            <div class="profile-field-value"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="profile-field">
                                             <div class="profile-field-label">House Type</div>
-                                            <div class="profile-field-value">Single House</div>
+                                            <div class="profile-field-value"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="profile-field">
                                             <div class="profile-field-label">Ownership Status</div>
-                                            <div class="profile-field-value">Owned</div>
+                                            <div class="profile-field-value"></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="profile-field">
                                             <div class="profile-field-label">Number of Rooms</div>
-                                            <div class="profile-field-value">3</div>
+                                            <div class="profile-field-value"></div>
                                         </div>
                                     </div>
                                 </div>
@@ -903,34 +825,7 @@
                                         </thead>
                                         <tbody>
                                             <tr>
-                                                <td>John Doe</td>
-                                                <td>Head of Family</td>
-                                                <td>33</td>
-                                                <td>Software Engineer</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jane Doe</td>
-                                                <td>Spouse</td>
-                                                <td>30</td>
-                                                <td>Teacher</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Johnny Doe</td>
-                                                <td>Son</td>
-                                                <td>5</td>
-                                                <td>Student</td>
-                                            </tr>
-                                            <tr>
-                                                <td>Jenny Doe</td>
-                                                <td>Daughter</td>
-                                                <td>3</td>
-                                                <td>Student</td>
-                                            </tr>
-                                            <tr>
-                                                <td>James Doe</td>
-                                                <td>Father</td>
-                                                <td>65</td>
-                                                <td>Retired</td>
+                                                <td colspan="4" class="text-center">No household members added yet.</td>
                                             </tr>
                                         </tbody>
                                     </table>
