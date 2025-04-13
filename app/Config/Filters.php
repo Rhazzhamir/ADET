@@ -76,6 +76,7 @@ class Filters extends BaseFilters
             // 'honeypot',
             // 'csrf',
             // 'invalidchars',
+            'adminAuth',    // Protect all admin routes
         ],
         'after' => [
             // 'honeypot',
@@ -117,11 +118,14 @@ class Filters extends BaseFilters
         ],
         'adminAuth' => [
             'before' => [
-                'admin/*',             // Protect all admin routes
-                'dashboard',           // Protect main dashboard
-                'budget/*',            // Protect budget routes
-                'officials/*',         // Protect officials routes
-                'settings'             // Protect settings
+                'admin',               // Protect the main admin route
+                'admin/*',             // Protect all admin sub-routes
+                'budget',              // Protect budget routes
+                'budget/*',            // Protect all budget sub-routes
+                'officials',           // Protect officials routes
+                'officials/*',         // Protect all officials sub-routes
+                'settings',            // Protect settings routes
+                'settings/*'           // Protect all settings sub-routes
             ]
         ]
     ];

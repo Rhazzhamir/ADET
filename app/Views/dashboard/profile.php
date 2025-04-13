@@ -517,6 +517,102 @@
                 display: none;
             }
         }
+
+        /* Change Password Section Styles */
+        .toggle-password {
+            border-top-right-radius: 5px;
+            border-bottom-right-radius: 5px;
+        }
+
+        .toggle-password:hover {
+            background-color: var(--input-bg);
+        }
+
+        .form-text {
+            color: var(--muted-text);
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+
+        /* Change Password Form Styles */
+        .password-form {
+            max-width: 100%;
+            padding: 20px;
+            background: var(--form-bg);
+            border-radius: 10px;
+        }
+
+        .password-input-group {
+            max-width: 300px;
+        }
+
+        .password-input-group .form-control {
+            border-right: none;
+            height: 45px;
+        }
+
+        .password-input-group .toggle-password {
+            border-left: none;
+            background: var(--input-bg);
+            width: 45px;
+        }
+
+        .password-input-group .toggle-password:hover {
+            background: var(--border-color);
+        }
+
+        .form-text ul {
+            max-width: 300px;
+            padding-left: 20px;
+            margin-top: 10px;
+        }
+
+        .form-text ul li {
+            margin-bottom: 5px;
+            color: var(--secondary-color);
+            font-size: 0.85rem;
+        }
+
+        .password-form .form-label {
+            font-weight: 500;
+            margin-bottom: 8px;
+            color: var(--text-color);
+        }
+
+        .password-form .btn {
+            height: 45px;
+            padding: 0 20px;
+        }
+
+        .password-form .btn-primary {
+            background: var(--primary-color);
+            border: none;
+            font-weight: 500;
+        }
+
+        .password-form .btn-outline-secondary {
+            border-color: var(--border-color);
+            color: var(--text-color);
+        }
+
+        .password-form .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+        }
+
+        .password-section-info {
+            background: rgba(13, 110, 253, 0.05);
+            padding: 15px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            border-left: 4px solid var(--primary-color);
+        }
+
+        .password-section-info p {
+            margin: 0;
+            color: var(--text-color);
+            font-size: 0.95rem;
+        }
     </style>
 </head>
 <body>
@@ -598,6 +694,11 @@
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">
                             <i class="fas fa-address-card"></i> Contact Information
+                        </button>
+                    </li>
+                    <li class="nav-item" role="presentation">
+                        <button class="nav-link" id="password-tab" data-bs-toggle="tab" data-bs-target="#password" type="button" role="tab" aria-controls="password" aria-selected="false">
+                            <i class="fas fa-key"></i> Change Password
                         </button>
                     </li>
                 </ul>
@@ -837,12 +938,72 @@
                             </div>
                         </div>
                     </div>
+
+                    <!-- Change Password Tab -->
+                    <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
+                        <div class="profile-content">
+                            <div class="profile-section">
+                                <h5 class="profile-section-title">
+                                    <i class="fas fa-lock"></i> Change Your Password
+                                </h5>
+                                <div class="password-section-info">
+                                    <p><i class="fas fa-info-circle me-2"></i>Ensure your account security by choosing a strong password that meets all the requirements below.</p>
+                                </div>
+                                <form id="changePasswordForm" class="password-form">
+                                    <div class="mb-4">
+                                        <label for="currentPassword" class="form-label">Current Password</label>
+                                        <div class="input-group password-input-group">
+                                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Enter your current password" required>
+                                            <button class="btn btn-outline-secondary toggle-password" type="button" title="Show/Hide Password">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="newPassword" class="form-label">New Password</label>
+                                        <div class="input-group password-input-group">
+                                            <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter your new password" required>
+                                            <button class="btn btn-outline-secondary toggle-password" type="button" title="Show/Hide Password">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                        <div class="form-text">
+                                            <ul class="mb-0 mt-2">
+                                                <li><i class="fas fa-check-circle me-2 text-success"></i>At least 8 characters long</li>
+                                                <li><i class="fas fa-check-circle me-2 text-success"></i>Must contain at least one number</li>
+                                                <li><i class="fas fa-check-circle me-2 text-success"></i>Must contain at least one special character</li>
+                                                <li><i class="fas fa-check-circle me-2 text-success"></i>Must contain at least one uppercase letter</li>
+                                            </ul>
+                                        </div>
+                                    </div>
+                                    <div class="mb-4">
+                                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
+                                        <div class="input-group password-input-group">
+                                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your new password" required>
+                                            <button class="btn btn-outline-secondary toggle-password" type="button" title="Show/Hide Password">
+                                                <i class="fas fa-eye"></i>
+                                            </button>
+                                        </div>
+                                    </div>
+                                    <div class="d-flex align-items-center gap-3">
+                                        <button type="submit" class="btn btn-primary">
+                                            <i class="fas fa-key me-2"></i>Update Password
+                                        </button>
+                                        <button type="reset" class="btn btn-outline-secondary">
+                                            <i class="fas fa-undo me-2"></i>Reset
+                                        </button>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
+
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     </div>
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Theme toggle functionality
         document.addEventListener('DOMContentLoaded', function() {
@@ -873,6 +1034,31 @@
                     icon.className = 'fas fa-moon';
                 }
             }
+        });
+
+        // Password visibility toggle
+        document.querySelectorAll('.toggle-password').forEach(button => {
+            button.addEventListener('click', function() {
+                const input = this.previousElementSibling;
+                const icon = this.querySelector('i');
+                
+                if (input.type === 'password') {
+                    input.type = 'text';
+                    icon.classList.remove('fa-eye');
+                    icon.classList.add('fa-eye-slash');
+                } else {
+                    input.type = 'password';
+                    icon.classList.remove('fa-eye-slash');
+                    icon.classList.add('fa-eye');
+                }
+            });
+        });
+
+        // Form submission handling
+        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // Add your password change logic here
+            alert('Password change functionality will be implemented soon!');
         });
     </script>
 </body>

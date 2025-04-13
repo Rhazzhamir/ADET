@@ -459,9 +459,6 @@
     </style>
 </head>
 <body class="hold-transition sidebar-mini">
-    <!-- Include the alerts partial -->
-    <?= view('partials/alerts') ?>
-
     <div class="wrapper">
         <!-- Navbar -->
         <nav class="main-header navbar navbar-expand navbar-white navbar-light">
