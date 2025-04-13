@@ -663,15 +663,21 @@
                         <div class="avatar-placeholder">
                             <i class="fas fa-user"></i>
                         </div>
-                        <div class="avatar-edit">
+                        <label for="profilePicInput" class="avatar-edit" title="Upload Profile Picture">
                             <i class="fas fa-camera"></i>
-                        </div>
+                        </label>
+                        <input type="file" id="profilePicInput" class="d-none" accept="image/*">
                     </div>
                     <div class="profile-info">
-                        <h2><?= strtoupper(esc($resident['full_name'])) ?></h2>
-                        <p><i class="fas fa-envelope me-2"></i><?= esc($resident['email']) ?></p>
-                        <p><i class="fas fa-phone me-2"></i><?= esc($resident['phone']) ?></p>
-                        <p><i class="fas fa-map-marker-alt me-2"></i><?= esc($resident['address']) ?></p>
+                        <h2><?= !empty($resident['full_name']) ? strtoupper(esc($resident['full_name'])) : '' ?></h2>
+                        <p><i class="fas fa-envelope me-2"></i><?= !empty($resident['email']) ? esc($resident['email']) : '' ?></p>
+                        <p><i class="fas fa-phone me-2"></i><?= !empty($resident['phone']) ? esc($resident['phone']) : '' ?></p>
+                        <p><i class="fas fa-map-marker-alt me-2"></i><?= !empty($resident['address']) ? esc($resident['address']) : '' ?></p>
+                        <div class="mt-3">
+                            <button class="btn btn-primary btn-sm" onclick="document.getElementById('profilePicInput').click()">
+                                <i class="fas fa-upload me-2"></i>Upload Profile Picture
+                            </button>
+                        </div>
                     </div>
                 </div>
 
@@ -954,6 +960,15 @@
             e.preventDefault();
             // Add your password change logic here
             alert('Password change functionality will be implemented soon!');
+        });
+
+        // Add this to your existing script section
+        document.getElementById('profilePicInput').addEventListener('change', function(e) {
+            if (e.target.files && e.target.files[0]) {
+                // Here you would typically handle the file upload
+                // For now, we'll just show an alert
+                alert('Profile picture upload functionality will be implemented soon!');
+            }
         });
     </script>
 </body>
