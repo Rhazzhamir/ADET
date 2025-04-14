@@ -651,6 +651,21 @@
 
     <!-- Main Content -->
     <div class="main-content">
+        <!-- Flash Messages -->
+        <?php if (session()->getFlashdata('success')) : ?>
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <i class="fas fa-check-circle me-2"></i><?= session()->getFlashdata('success') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
+        <?php if (session()->getFlashdata('error')) : ?>
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                <i class="fas fa-exclamation-circle me-2"></i><?= session()->getFlashdata('error') ?>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+            </div>
+        <?php endif; ?>
+        
         <!-- Profile Header -->
         <div class="dashboard-card">
             <div class="card-header">
@@ -842,51 +857,56 @@
 
                     <!-- Change Password Tab -->
                     <div class="tab-pane fade" id="password" role="tabpanel" aria-labelledby="password-tab">
-                        <div class="profile-content">
+                        <div class="profile-content" style="background-color: #212529; color: #ffffff;">
                             <div class="profile-section">
-                                <h5 class="profile-section-title">
-                                    <i class="fas fa-lock"></i> Change Your Password
+                                <h5 class="profile-section-title" style="color: #0d6efd; border-bottom: 1px solid #343a40;">
+                                    <i class="fas fa-key"></i> Change Your Password
                                 </h5>
-                                <div class="password-section-info">
-                                    <p><i class="fas fa-info-circle me-2"></i>Ensure your account security by choosing a strong password that meets all the requirements below.</p>
+                                <div class="alert alert-info bg-dark text-info border-info">
+                                    <i class="fas fa-info-circle me-2"></i>Ensure your account security by choosing a strong password that meets all the requirements below.
                                 </div>
-                                <form id="changePasswordForm" class="password-form">
+                                
+                                <form action="<?= base_url('dashboard/change-password') ?>" method="POST" class="mt-4" id="passwordChangeForm">
                                     <div class="mb-4">
-                                        <label for="currentPassword" class="form-label">Current Password</label>
-                                        <div class="input-group password-input-group">
-                                            <input type="password" class="form-control" id="currentPassword" name="currentPassword" placeholder="Enter your current password" required>
-                                            <button class="btn btn-outline-secondary toggle-password" type="button" title="Show/Hide Password">
+                                        <label for="current_password" class="form-label">Current Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control bg-dark text-light border-secondary" id="current_password" name="current_password" required autocomplete="off">
+                                            <button class="btn btn-outline-secondary toggle-password" type="button">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </div>
                                     </div>
+                                    
                                     <div class="mb-4">
-                                        <label for="newPassword" class="form-label">New Password</label>
-                                        <div class="input-group password-input-group">
-                                            <input type="password" class="form-control" id="newPassword" name="newPassword" placeholder="Enter your new password" required>
-                                            <button class="btn btn-outline-secondary toggle-password" type="button" title="Show/Hide Password">
+                                        <label for="new_password" class="form-label">New Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control bg-dark text-light border-secondary" id="new_password" name="new_password" required autocomplete="off">
+                                            <button class="btn btn-outline-secondary toggle-password" type="button">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </div>
-                                        <div class="form-text">
-                                            <ul class="mb-0 mt-2">
-                                                <li><i class="fas fa-check-circle me-2 text-success"></i>At least 8 characters long</li>
-                                                <li><i class="fas fa-check-circle me-2 text-success"></i>Must contain at least one number</li>
-                                                <li><i class="fas fa-check-circle me-2 text-success"></i>Must contain at least one special character</li>
-                                                <li><i class="fas fa-check-circle me-2 text-success"></i>Must contain at least one uppercase letter</li>
+                                        
+                                        <div class="mt-3">
+                                            <ul class="list-unstyled">
+                                                <li class="text-success mb-2"><i class="fas fa-check-circle me-2"></i>At least 8 characters long</li>
+                                                <li class="text-success mb-2"><i class="fas fa-check-circle me-2"></i>Must contain at least one number</li>
+                                                <li class="text-success mb-2"><i class="fas fa-check-circle me-2"></i>Must contain at least one special character</li>
+                                                <li class="text-success mb-2"><i class="fas fa-check-circle me-2"></i>Must contain at least one uppercase letter</li>
                                             </ul>
                                         </div>
                                     </div>
+                                    
                                     <div class="mb-4">
-                                        <label for="confirmPassword" class="form-label">Confirm New Password</label>
-                                        <div class="input-group password-input-group">
-                                            <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm your new password" required>
-                                            <button class="btn btn-outline-secondary toggle-password" type="button" title="Show/Hide Password">
+                                        <label for="confirm_password" class="form-label">Confirm New Password</label>
+                                        <div class="input-group">
+                                            <input type="password" class="form-control bg-dark text-light border-secondary" id="confirm_password" name="confirm_password" required autocomplete="off">
+                                            <button class="btn btn-outline-secondary toggle-password" type="button">
                                                 <i class="fas fa-eye"></i>
                                             </button>
                                         </div>
                                     </div>
-                                    <div class="d-flex align-items-center gap-3">
+                                    
+                                    <div class="d-flex gap-3">
                                         <button type="submit" class="btn btn-primary">
                                             <i class="fas fa-key me-2"></i>Update Password
                                         </button>
@@ -935,6 +955,14 @@
                     icon.className = 'fas fa-moon';
                 }
             }
+            
+            // Clear password form if needed
+            <?php if(session()->getFlashdata('clear_form')): ?>
+            const passwordInputs = document.querySelectorAll('input[type="password"]');
+            passwordInputs.forEach(input => {
+                input.value = '';
+            });
+            <?php endif; ?>
         });
 
         // Password visibility toggle
@@ -956,7 +984,7 @@
         });
 
         // Form submission handling
-        document.getElementById('changePasswordForm').addEventListener('submit', function(e) {
+        document.getElementById('passwordChangeForm').addEventListener('submit', function(e) {
             e.preventDefault();
             // Add your password change logic here
             alert('Password change functionality will be implemented soon!');
@@ -970,6 +998,47 @@
                 alert('Profile picture upload functionality will be implemented soon!');
             }
         });
+
+        // Remove the previous form submission handler since we now have functioning backend
+        document.querySelectorAll('form').forEach(form => {
+            // Clone the form to remove event listeners
+            const newForm = form.cloneNode(true);
+            form.parentNode.replaceChild(newForm, form);
+            
+            // Re-add the password toggle functionality for the new form
+            newForm.querySelectorAll('.toggle-password').forEach(button => {
+                button.addEventListener('click', function() {
+                    const input = this.previousElementSibling;
+                    const icon = this.querySelector('i');
+                    
+                    if (input.type === 'password') {
+                        input.type = 'text';
+                        icon.classList.remove('fa-eye');
+                        icon.classList.add('fa-eye-slash');
+                    } else {
+                        input.type = 'password';
+                        icon.classList.remove('fa-eye-slash');
+                        icon.classList.add('fa-eye');
+                    }
+                });
+            });
+        });
+
+        // Clear password form if needed
+        <?php if(session()->getFlashdata('clear_form')): ?>
+        // Reset the password change form
+        if (document.getElementById('passwordChangeForm')) {
+            document.getElementById('passwordChangeForm').reset();
+        }
+        // Clear any remaining password fields
+        document.querySelectorAll('input[type="password"]').forEach(input => {
+            input.value = '';
+        });
+        // Add security attribute to prevent browsers from auto-filling
+        document.querySelectorAll('input[type="password"]').forEach(input => {
+            input.setAttribute('autocomplete', 'new-password');
+        });
+        <?php endif; ?>
     </script>
 </body>
 </html> 

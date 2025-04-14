@@ -416,7 +416,7 @@
                         <i class="fas fa-user-circle"></i>
                     </div>
                     <div class="welcome-text mt-3">
-                        <h4>Hello, [Resident Name]!</h4>
+                        <h4>Hello, <?= isset($resident['full_name']) ? strtoupper(esc($resident['full_name'])) : 'Resident' ?>!</h4>
                         <p>Welcome to the Barangay Information and Management System. Please complete your profile and household information to access all features.</p>
                     </div>
                 </div>
