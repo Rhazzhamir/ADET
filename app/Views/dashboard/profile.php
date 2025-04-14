@@ -725,26 +725,56 @@
                                 <div class="row">
                                     <div class="col-md-6">
                                         <div class="profile-field">
-                                            <div class="profile-field-label">Full Name</div>
-                                            <div class="profile-field-value"><?= strtoupper(esc($resident['full_name'])) ?></div>
+                                            <div class="profile-field-label">FULL NAME</div>
+                                            <div class="profile-field-value resident-full-name"><?= strtoupper(esc($resident['full_name'])) ?></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="profile-field">
-                                            <div class="profile-field-label">Email Address</div>
-                                            <div class="profile-field-value"><?= esc($resident['email']) ?></div>
+                                            <div class="profile-field-label">EMAIL ADDRESS</div>
+                                            <div class="profile-field-value"><?= !empty($resident['email']) ? esc($resident['email']) : '' ?></div>
                                         </div>
                                     </div>
                                     <div class="col-md-6">
                                         <div class="profile-field">
-                                            <div class="profile-field-label">Phone Number</div>
-                                            <div class="profile-field-value"><?= esc($resident['phone']) ?></div>
+                                            <div class="profile-field-label">PHONE NUMBER</div>
+                                            <div class="profile-field-value"><?= !empty($resident['phone']) ? esc($resident['phone']) : '' ?></div>
                                         </div>
                                     </div>
-                                    <div class="col-md-12">
+                                    <div class="col-md-6">
                                         <div class="profile-field">
-                                            <div class="profile-field-label">Address</div>
-                                            <div class="profile-field-value"><?= esc($resident['address']) ?></div>
+                                            <div class="profile-field-label">ADDRESS</div>
+                                            <div class="profile-field-value"><?= !empty($resident['address']) ? esc($resident['address']) : '' ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-field">
+                                            <div class="profile-field-label">SUFFIX (Jr., Sr., III, etc.)</div>
+                                            <div class="profile-field-value"><?= !empty($resident['suffix']) ? esc($resident['suffix']) : '' ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-field">
+                                            <div class="profile-field-label">DATE OF BIRTH</div>
+                                            <div class="profile-field-value"><?= !empty($resident['date_of_birth']) ? date('F j, Y', strtotime($resident['date_of_birth'])) : '' ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-field">
+                                            <div class="profile-field-label">GENDER</div>
+                                            <div class="profile-field-value"><?= !empty($resident['gender']) ? ucfirst(esc($resident['gender'])) : '' ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-field">
+                                            <div class="profile-field-label">CIVIL STATUS</div>
+                                            <div class="profile-field-value"><?= !empty($resident['civil_status']) ? ucfirst(esc($resident['civil_status'])) : '' ?></div>
+                                        </div>
+                                    </div>
+                                    <div class="col-md-6">
+                                        <div class="profile-field">
+                                            <div class="profile-field-label">NATIONALITY</div>
+                                            <div class="profile-field-value"><?= !empty($resident['nationality']) ? esc($resident['nationality']) : '' ?></div>
                                         </div>
                                     </div>
                                 </div>

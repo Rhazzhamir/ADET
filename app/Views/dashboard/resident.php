@@ -175,7 +175,7 @@
         }
 
         .form-section-title {
-            color: var(--primary-color);
+            color: #20c997;
             margin-bottom: 20px;
             font-weight: 600;
             display: flex;
@@ -416,7 +416,7 @@
                         <i class="fas fa-user-circle"></i>
                     </div>
                     <div class="welcome-text mt-3">
-                        <h4>Hello, <?= isset($resident['full_name']) ? strtoupper(esc($resident['full_name'])) : 'Resident' ?>!</h4>
+                        <h4>Hello, <span class="resident-full-name"><?= isset($resident['full_name']) ? strtoupper(esc($resident['full_name'])) : 'Resident' ?></span>!</h4>
                         <p>Welcome to the Barangay Information and Management System. Please complete your profile and household information to access all features.</p>
                     </div>
                 </div>
@@ -426,9 +426,9 @@
                         <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
                     <div class="progress-steps">
-                        <div class="progress-step completed">Personal Info</div>
+                        <div class="progress-step completed">Basic Info</div>
                         <div class="progress-step active">Contact Info</div>
-                        <div class="progress-step">Household Info</div>
+                        <div class="progress-step">Household Details</div>
                         <div class="progress-step">Household Members</div>
                     </div>
                 </div>
@@ -443,57 +443,68 @@
         <!-- Personal Information Registration Form -->
         <div class="dashboard-card">
             <div class="card-header">
-                <h4 class="mb-0">Personal Information Registration</h4>
+                <h4 class="mb-0">Basic Info</h4>
                 <span class="badge bg-primary">Step 1 of 2</span>
             </div>
             <div class="card-body">
-                <form id="personalInfoForm">
+                <form id="personalInfoForm" action="<?= base_url('dashboard/savePersonalInfo') ?>" method="POST">
                     <div class="form-section">
-                        <h5 class="form-section-title"><i class="fas fa-user me-2"></i>Basic Information</h5>
+                        <h5 class="form-section-title" style="color: #20c997;"><i class="fas fa-user me-2"></i>Basic Info</h5>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="firstName" class="form-label">First Name</label>
-                                <input type="text" class="form-control" id="firstName" required placeholder="Enter your first name">
+                                <label for="firstName" class="form-label">FIRST NAME</label>
+                                <input type="text" class="form-control" id="firstName" name="firstName" required 
+                                       placeholder="" value="<?= !empty($resident['first_name']) ? esc($resident['first_name']) : '' ?>">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="lastName" class="form-label">Last Name</label>
-                                <input type="text" class="form-control" id="lastName" required placeholder="Enter your last name">
+                                <label for="lastName" class="form-label">LAST NAME</label>
+                                <input type="text" class="form-control" id="lastName" name="lastName" required 
+                                       placeholder="" value="<?= !empty($resident['last_name']) ? esc($resident['last_name']) : '' ?>">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="middleName" class="form-label">Middle Name</label>
-                                <input type="text" class="form-control" id="middleName" placeholder="Enter your middle name">
+                                <label for="middleName" class="form-label">MIDDLE NAME</label>
+                                <input type="text" class="form-control" id="middleName" name="middleName" 
+                                       placeholder="" value="<?= !empty($resident['middle_name']) ? esc($resident['middle_name']) : '' ?>">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="suffix" class="form-label">Suffix (Jr., Sr., III, etc.)</label>
-                                <input type="text" class="form-control" id="suffix" placeholder="Enter suffix if applicable">
+                                <label for="suffix" class="form-label">SUFFIX (Jr., Sr., III, etc.)</label>
+                                <input type="text" class="form-control" id="suffix" name="suffix" 
+                                       placeholder="" value="<?= !empty($resident['suffix']) ? esc($resident['suffix']) : '' ?>">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="dateOfBirth" class="form-label">Date of Birth</label>
-                                <input type="date" class="form-control" id="dateOfBirth" required>
+                                <label for="dateOfBirth" class="form-label">DATE OF BIRTH</label>
+                                <input type="date" class="form-control" id="dateOfBirth" name="dateOfBirth" required
+                                       value="<?= !empty($resident['date_of_birth']) ? esc($resident['date_of_birth']) : '' ?>">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="gender" class="form-label">Gender</label>
-                                <select class="form-select" id="gender" required>
-                                    <option value="" selected disabled>Select Gender</option>
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
-                                    <option value="other">Other</option>
+                                <label for="gender" class="form-label">GENDER</label>
+                                <select class="form-select" id="gender" name="gender" required>
+                                    <option value="" disabled <?= empty($resident['gender']) ? 'selected' : '' ?>>Select Gender</option>
+                                    <option value="male" <?= (!empty($resident['gender']) && $resident['gender'] == 'male') ? 'selected' : '' ?>>Male</option>
+                                    <option value="female" <?= (!empty($resident['gender']) && $resident['gender'] == 'female') ? 'selected' : '' ?>>Female</option>
+                                    <option value="other" <?= (!empty($resident['gender']) && $resident['gender'] == 'other') ? 'selected' : '' ?>>Other</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="civilStatus" class="form-label">Civil Status</label>
-                                <select class="form-select" id="civilStatus" required>
-                                    <option value="" selected disabled>Select Status</option>
-                                    <option value="single">Single</option>
-                                    <option value="married">Married</option>
-                                    <option value="divorced">Divorced</option>
-                                    <option value="widowed">Widowed</option>
+                                <label for="civilStatus" class="form-label">CIVIL STATUS</label>
+                                <select class="form-select" id="civilStatus" name="civilStatus" required>
+                                    <option value="" disabled <?= empty($resident['civil_status']) ? 'selected' : '' ?>>Select Status</option>
+                                    <option value="single" <?= (!empty($resident['civil_status']) && $resident['civil_status'] == 'single') ? 'selected' : '' ?>>Single</option>
+                                    <option value="married" <?= (!empty($resident['civil_status']) && $resident['civil_status'] == 'married') ? 'selected' : '' ?>>Married</option>
+                                    <option value="divorced" <?= (!empty($resident['civil_status']) && $resident['civil_status'] == 'divorced') ? 'selected' : '' ?>>Divorced</option>
+                                    <option value="widowed" <?= (!empty($resident['civil_status']) && $resident['civil_status'] == 'widowed') ? 'selected' : '' ?>>Widowed</option>
                                 </select>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="nationality" class="form-label">Nationality</label>
-                                <input type="text" class="form-control" id="nationality" value="Filipino" required>
+                                <label for="nationality" class="form-label">NATIONALITY</label>
+                                <input type="text" class="form-control" id="nationality" name="nationality" 
+                                       placeholder="" value="<?= !empty($resident['nationality']) ? esc($resident['nationality']) : 'Filipino' ?>">
                             </div>
+                        </div>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Basic Info
+                            </button>
                         </div>
                     </div>
 
@@ -501,39 +512,26 @@
                         <h5 class="form-section-title"><i class="fas fa-address-card me-2"></i>Contact Information</h5>
                         <div class="row">
                             <div class="col-md-6 mb-3">
-                                <label for="email" class="form-label">Email Address</label>
-                                <input type="email" class="form-control" id="email" required placeholder="Enter your email address">
+                                <label for="email" class="form-label">EMAIL ADDRESS</label>
+                                <input type="email" class="form-control" id="email" name="email" required 
+                                       placeholder="" value="<?= !empty($resident['email']) ? esc($resident['email']) : '' ?>">
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="phone" class="form-label">Contact Number</label>
-                                <input type="tel" class="form-control" id="phone" required placeholder="Enter your contact number">
+                                <label for="phone" class="form-label">CONTACT NUMBER</label>
+                                <input type="tel" class="form-control" id="phone" name="phone" required 
+                                       placeholder="" value="<?= !empty($resident['phone']) ? esc($resident['phone']) : '' ?>">
                             </div>
                             <div class="col-md-12 mb-3">
-                                <label for="address" class="form-label">Complete Address</label>
-                                <textarea class="form-control" id="address" rows="2" required placeholder="Enter your complete address"></textarea>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="occupation" class="form-label">Occupation</label>
-                                <input type="text" class="form-control" id="occupation" placeholder="Enter your occupation">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="educationalAttainment" class="form-label">Educational Attainment</label>
-                                <select class="form-select" id="educationalAttainment">
-                                    <option value="" selected disabled>Select Level</option>
-                                    <option value="elementary">Elementary</option>
-                                    <option value="highschool">High School</option>
-                                    <option value="vocational">Vocational</option>
-                                    <option value="college">College</option>
-                                    <option value="postgraduate">Post Graduate</option>
-                                </select>
+                                <label for="address" class="form-label">ADDRESS</label>
+                                <textarea class="form-control" id="address" name="address" rows="2" required
+                                          placeholder=""><?= !empty($resident['address']) ? esc($resident['address']) : '' ?></textarea>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-nav">
-                        <button type="submit" class="btn btn-primary">
-                            <i class="fas fa-arrow-right me-2"></i>Continue to Household Info
-                        </button>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Contact Info
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
@@ -584,6 +582,11 @@
                                 <textarea class="form-control" id="householdAddress" rows="2" required placeholder="Enter your household address"></textarea>
                             </div>
                         </div>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Household Details
+                            </button>
+                        </div>
                     </div>
 
                     <div class="form-section">
@@ -624,54 +627,68 @@
                                 </div>
                                 <div class="col-md-2">
                                     <label class="form-label">&nbsp;</label>
-                                    <button type="button" class="btn btn-danger form-control">
+                                    <button type="button" class="btn btn-danger form-control remove-member">
                                         <i class="fas fa-trash"></i>
                                     </button>
                                 </div>
                             </div>
                         </div>
-                    </div>
-
-                    <div class="form-nav">
-                        <button type="submit" class="btn btn-success ms-auto">
-                            <i class="fas fa-check me-2"></i>Complete Registration
-                        </button>
+                        <div class="text-end mt-3">
+                            <button type="submit" class="btn btn-primary">
+                                <i class="fas fa-save me-2"></i>Save Household Members
+                            </button>
+                        </div>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    <!-- Bootstrap and jQuery Scripts -->
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
     <script>
-        // Theme toggle functionality
-        document.addEventListener('DOMContentLoaded', function() {
-            const themeToggle = document.getElementById('themeToggle');
+        // Function to toggle dark/light theme
+        function toggleTheme() {
             const html = document.documentElement;
-            const icon = themeToggle.querySelector('i');
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             
-            // Check for saved theme preference or use default
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            html.setAttribute('data-theme', savedTheme);
-            updateIcon(savedTheme);
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
             
-            // Toggle theme on button click
-            themeToggle.addEventListener('click', function() {
-                const currentTheme = html.getAttribute('data-theme');
-                const newTheme = currentTheme === 'light' ? 'dark' : 'light';
+            // Update theme toggle button icon
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (themeToggleIcon) {
+                themeToggleIcon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+            }
+        }
+        
+        // Apply saved theme on page load
+        document.addEventListener('DOMContentLoaded', function() {
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
                 
-                html.setAttribute('data-theme', newTheme);
-                localStorage.setItem('theme', newTheme);
-                updateIcon(newTheme);
-            });
-            
-            // Update icon based on theme
-            function updateIcon(theme) {
-                if (theme === 'light') {
-                    icon.className = 'fas fa-sun';
-                } else {
-                    icon.className = 'fas fa-moon';
+                // Update theme toggle button icon
+                const themeToggleIcon = document.querySelector('.theme-toggle i');
+                if (themeToggleIcon) {
+                    themeToggleIcon.className = savedTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
                 }
+            }
+            
+            // Add theme toggle event listener
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
+            }
+            
+            // Get resident's full name from the page and update welcome message
+            const fullNameElement = document.querySelector('.resident-full-name');
+            if (fullNameElement) {
+                // Simply keep the original name without splitting it
+                // No need to modify the welcome message
             }
         });
 

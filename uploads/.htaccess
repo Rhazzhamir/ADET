@@ -1,0 +1,21 @@
+# Disable directory listing
+Options -Indexes
+
+# Allow direct access only to image files
+<FilesMatch "(?i)\.(gif|jpe?g|png)$">
+    Order Allow,Deny
+    Allow from all
+</FilesMatch>
+
+# Deny direct access to all other file types
+<FilesMatch "^(?!\.(gif|jpe?g|png)$)">
+    Order Allow,Deny
+    Deny from all
+</FilesMatch>
+
+# Allow access via PHP script
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteCond %{REQUEST_FILENAME} -f
+    RewriteRule ^(.*)$ $1 [L]
+</IfModule> 

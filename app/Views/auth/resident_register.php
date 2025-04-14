@@ -275,32 +275,39 @@
     
     <!-- Theme Toggle Script -->
     <script>
+        // Theme toggle functionality
         function toggleTheme() {
             const html = document.documentElement;
-            const themeToggle = document.querySelector('.theme-toggle i');
+            const currentTheme = html.getAttribute('data-theme');
+            const newTheme = currentTheme === 'light' ? 'dark' : 'light';
             
-            if (html.getAttribute('data-theme') === 'light') {
-                html.setAttribute('data-theme', 'dark');
-                themeToggle.classList.remove('fa-moon');
-                themeToggle.classList.add('fa-sun');
-                localStorage.setItem('theme', 'dark');
-            } else {
-                html.setAttribute('data-theme', 'light');
-                themeToggle.classList.remove('fa-sun');
-                themeToggle.classList.add('fa-moon');
-                localStorage.setItem('theme', 'light');
+            html.setAttribute('data-theme', newTheme);
+            localStorage.setItem('theme', newTheme);
+            
+            // Update theme toggle button icon
+            const themeToggleIcon = document.querySelector('.theme-toggle i');
+            if (themeToggleIcon) {
+                themeToggleIcon.className = newTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
             }
         }
-
-        // Check for saved theme preference
+        
+        // Apply saved theme on page load
         document.addEventListener('DOMContentLoaded', function() {
-            const savedTheme = localStorage.getItem('theme') || 'light';
-            document.documentElement.setAttribute('data-theme', savedTheme);
+            const savedTheme = localStorage.getItem('theme');
+            if (savedTheme) {
+                document.documentElement.setAttribute('data-theme', savedTheme);
+                
+                // Update theme toggle button icon
+                const themeToggleIcon = document.querySelector('.theme-toggle i');
+                if (themeToggleIcon) {
+                    themeToggleIcon.className = savedTheme === 'light' ? 'fas fa-moon' : 'fas fa-sun';
+                }
+            }
             
-            const themeToggle = document.querySelector('.theme-toggle i');
-            if (savedTheme === 'dark') {
-                themeToggle.classList.remove('fa-moon');
-                themeToggle.classList.add('fa-sun');
+            // Add theme toggle event listener
+            const themeToggle = document.querySelector('.theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', toggleTheme);
             }
         });
     </script>

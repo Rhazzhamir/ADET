@@ -128,4 +128,62 @@ class Dashboard extends BaseController
         
         return redirect()->to(base_url('dashboard/profile').'#password');
     }
+
+    public function savePersonalInfo()
+    {
+        // Check if user is logged in
+        if (!session()->get('is_logged_in') || session()->get('user_type') !== 'resident') {
+            return redirect()->to(base_url('auth/resident/login'));
+        }
+        
+        // Get form data
+        $firstName = $this->request->getPost('firstName');
+        $middleName = $this->request->getPost('middleName');
+        $lastName = $this->request->getPost('lastName');
+        $suffix = $this->request->getPost('suffix');
+        $dateOfBirth = $this->request->getPost('dateOfBirth');
+        $gender = $this->request->getPost('gender');
+        $civilStatus = $this->request->getPost('civilStatus');
+        $nationality = $this->request->getPost('nationality');
+        
+        // Construct full name
+        $fullName = $firstName;
+        if (!empty($middleName)) {
+            $fullName .= ' ' . $middleName;
+        }
+        $fullName .= ' ' . $lastName;
+        if (!empty($suffix)) {
+            $fullName .= ' ' . $suffix;
+        }
+        
+        // Get resident data
+        $residentModel = new \App\Models\ResidentModel();
+        $residentId = session()->get('resident_id');
+        
+        // Update resident data
+        $data = [
+            'full_name' => $fullName,
+            'first_name' => $firstName,
+            'middle_name' => $middleName,
+            'last_name' => $lastName,
+            'suffix' => $suffix,
+            'date_of_birth' => $dateOfBirth,
+            'gender' => $gender,
+            'civil_status' => $civilStatus,
+            'nationality' => $nationality
+        ];
+        
+        if ($residentModel->update($residentId, $data)) {
+            // Update session data
+            session()->set('resident_name', $fullName);
+            
+            // Set success message
+            session()->setFlashdata('success', 'Personal information updated successfully');
+        } else {
+            // Set error message
+            session()->setFlashdata('error', 'Failed to update personal information');
+        }
+        
+        return redirect()->to(base_url('dashboard/profile'));
+    }
 } 

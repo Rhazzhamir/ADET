@@ -13,10 +13,19 @@ class ResidentModel extends Model
     protected $useSoftDeletes = false;
     protected $allowedFields = [
         'full_name', 
+        'first_name',
+        'middle_name',
+        'last_name',
+        'suffix',
+        'date_of_birth',
+        'gender',
+        'civil_status',
+        'nationality',
         'email', 
         'phone', 
         'address', 
-        'password', 
+        'password',
+        'profile_picture',
         'created_at', 
         'updated_at'
     ];

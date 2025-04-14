@@ -37,6 +37,10 @@ $routes->post('admin/save', 'Residents::save');
 $routes->get('admin/households', 'Residents::households');
 $routes->post('admin/saveHousehold', 'Residents::saveHousehold');
 
+// Profile Picture Upload Route
+$routes->post('residents/uploadProfilePicture', 'Residents::uploadProfilePicture');
+$routes->get('test-profile-upload', 'Residents::testProfileUpload');
+
 // Budget Routes
 $routes->get('budget', 'Budget::index');
 $routes->get('budget/expenses', 'Budget::expenses');
