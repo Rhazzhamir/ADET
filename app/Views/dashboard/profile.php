@@ -670,7 +670,6 @@
         <div class="dashboard-card">
             <div class="card-header">
                 <h4 class="mb-0">My Profile</h4>
-                <span class="badge bg-success">Active</span>
             </div>
             <div class="card-body">
                 <div class="profile-header">
@@ -704,7 +703,7 @@
                     </li>
                     <li class="nav-item" role="presentation">
                         <button class="nav-link" id="contact-tab" data-bs-toggle="tab" data-bs-target="#contact" type="button" role="tab" aria-controls="contact" aria-selected="false">
-                            <i class="fas fa-address-card"></i> Contact Information
+                            <i class="fas fa-address-card"></i> Household Details
                         </button>
                     </li>
                     <li class="nav-item" role="presentation">
@@ -804,61 +803,47 @@
                     <!-- Contact Information Tab -->
                     <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">
                         <div class="profile-content">
-                            <div class="profile-section">
-                                <h5 class="profile-section-title">
-                                    <i class="fas fa-address-card"></i> Contact Information
-                                </h5>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Email Address</div>
-                                            <div class="profile-field-value"><?= !empty($resident['email']) ? esc($resident['email']) : '' ?></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Contact Number</div>
-                                            <div class="profile-field-value"><?= !empty($resident['phone']) ? esc($resident['phone']) : '' ?></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-12">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Complete Address</div>
-                                            <div class="profile-field-value"><?= !empty($resident['address']) ? esc($resident['address']) : '' ?></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            
                             <div class="profile-section">
                                 <h5 class="profile-section-title">
                                     <i class="fas fa-house-user"></i> Household Details
                                 </h5>
-                                <div class="row">
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Household Number</div>
-                                            <div class="profile-field-value"></div>
+                                <?php if (isset($household) && $household) : ?>
+                                    <div class="row">
+                                        <div class="col-md-6">
+                                            <div class="profile-field">
+                                                <div class="profile-field-label">HOUSEHOLD HEAD</div>
+                                                <div class="profile-field-value"><?= esc($household['household_head']) ?></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="profile-field">
+                                                <div class="profile-field-label">HOUSE TYPE</div>
+                                                <div class="profile-field-value"><?= esc($household['house_type']) ?></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="profile-field">
+                                                <div class="profile-field-label">OWNERSHIP STATUS</div>
+                                                <div class="profile-field-value"><?= esc($household['ownership_status']) ?></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-md-6">
+                                            <div class="profile-field">
+                                                <div class="profile-field-label">NUMBER OF ROOMS</div>
+                                                <div class="profile-field-value"><?= esc($household['number_of_rooms']) ?></div>
+                                            </div>
+                                        </div>
+                                        <div class="col-12">
+                                            <div class="profile-field">
+                                                <div class="profile-field-label">HOUSEHOLD ADDRESS</div>
+                                                <div class="profile-field-value"><?= esc($household['household_address']) ?></div>
+                                            </div>
                                         </div>
                                     </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">House Type</div>
-                                            <div class="profile-field-value"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Ownership Status</div>
-                                            <div class="profile-field-value"></div>
-                                        </div>
-                                    </div>
-                                    <div class="col-md-6">
-                                        <div class="profile-field">
-                                            <div class="profile-field-label">Number of Rooms</div>
-                                            <div class="profile-field-value"></div>
-                                        </div>
-                                    </div>
-                                </div>
+                                <?php else : ?>
+                                    <div class="alert alert-info">No household details found. Please complete your profile on the dashboard.</div>
+                                <?php endif; ?>
                             </div>
                             <div class="profile-section">
                                 <h5 class="profile-section-title">
@@ -872,12 +857,29 @@
                                                 <th>Relationship</th>
                                                 <th>Age</th>
                                                 <th>Occupation</th>
+                                                <th>Actions</th>
                                             </tr>
                                         </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td colspan="4" class="text-center">No household members added yet.</td>
-                                            </tr>
+                                        <tbody id="householdMembersTableBody">
+                                            <?php if (isset($members) && !empty($members)) : ?>
+                                                <?php foreach ($members as $member) : ?>
+                                                    <tr id="member-row-<?= esc($member['id']) ?>">
+                                                        <td><?= esc($member['full_name']) ?></td>
+                                                        <td><?= esc($member['relationship']) ?></td>
+                                                        <td><?= esc($member['age']) ?></td>
+                                                        <td><?= '' // Placeholder for Occupation - Add this field later if needed ?></td> 
+                                                        <td>
+                                                            <button class="btn btn-danger btn-sm delete-member-btn" data-member-id="<?= esc($member['id']) ?>" title="Delete Member">
+                                                                <i class="fas fa-trash-alt"></i>
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                <?php endforeach; ?>
+                                            <?php else : ?>
+                                                <tr>
+                                                    <td colspan="5" class="text-center">No household members added yet.</td>
+                                                </tr>
+                                            <?php endif; ?>
                                         </tbody>
                                     </table>
                                 </div>
@@ -993,6 +995,106 @@
                 input.value = '';
             });
             <?php endif; ?>
+
+            // Profile picture upload functionality
+            const profilePicInput = document.getElementById('profilePicInput');
+            const avatarPlaceholder = document.querySelector('.avatar-placeholder');
+            const avatarEdit = document.querySelector('.avatar-edit');
+
+            if (profilePicInput) {
+                profilePicInput.addEventListener('change', function(e) {
+                    if (e.target.files && e.target.files[0]) {
+                        const file = e.target.files[0];
+                        
+                        // Validate file type
+                        if (!file.type.match('image.*')) {
+                            alert('Please select an image file (jpg, jpeg, png)');
+                            return;
+                        }
+                        
+                        // Validate file size (max 2MB)
+                        if (file.size > 2 * 1024 * 1024) {
+                            alert('File size should not exceed 2MB');
+                            return;
+                        }
+                        
+                        // Preview the image
+                        const reader = new FileReader();
+                        reader.onload = function(e) {
+                            // Create image element if it doesn't exist
+                            let img = avatarPlaceholder.querySelector('img');
+                            if (!img) {
+                                img = document.createElement('img');
+                                avatarPlaceholder.appendChild(img);
+                            }
+                            
+                            // Update image source
+                            img.src = e.target.result;
+                            img.style.width = '100%';
+                            img.style.height = '100%';
+                            img.style.objectFit = 'cover';
+                            
+                            // Hide the placeholder icon
+                            const icon = avatarPlaceholder.querySelector('i');
+                            if (icon) {
+                                icon.style.display = 'none';
+                            }
+                            
+                            // Upload the image
+                            uploadProfilePicture(file);
+                        };
+                        reader.readAsDataURL(file);
+                    }
+                });
+            }
+
+            // Function to upload profile picture
+            function uploadProfilePicture(file) {
+                const formData = new FormData();
+                formData.append('profile_picture', file);
+                formData.append('resident_id', '<?= session()->get('resident_id') ?>');
+                
+                // Show loading state
+                const uploadBtn = document.querySelector('.btn-primary.btn-sm');
+                if (uploadBtn) {
+                    const originalText = uploadBtn.innerHTML;
+                    uploadBtn.disabled = true;
+                    uploadBtn.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Uploading...';
+                }
+                
+                // Send AJAX request
+                fetch('<?= base_url('residents/uploadProfilePicture') ?>', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-Requested-With': 'XMLHttpRequest'
+                    }
+                })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.error) {
+                        alert('Error: ' + data.error);
+                    } else {
+                        // Update the profile picture in the UI
+                        const img = avatarPlaceholder.querySelector('img');
+                        if (img) {
+                            img.src = data.profile_picture_url;
+                        }
+                        alert('Profile picture updated successfully');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('An error occurred while uploading the profile picture');
+                })
+                .finally(() => {
+                    // Reset button state
+                    if (uploadBtn) {
+                        uploadBtn.disabled = false;
+                        uploadBtn.innerHTML = '<i class="fas fa-upload me-2"></i>Upload Profile Picture';
+                    }
+                });
+            }
         });
 
         // Password visibility toggle
@@ -1020,55 +1122,65 @@
             alert('Password change functionality will be implemented soon!');
         });
 
-        // Add this to your existing script section
-        document.getElementById('profilePicInput').addEventListener('change', function(e) {
-            if (e.target.files && e.target.files[0]) {
-                // Here you would typically handle the file upload
-                // For now, we'll just show an alert
-                alert('Profile picture upload functionality will be implemented soon!');
-            }
-        });
+        // Household Member Deletion Handler
+        const tableBody = document.getElementById('householdMembersTableBody');
+        if (tableBody) {
+            tableBody.addEventListener('click', function(e) {
+                const deleteButton = e.target.closest('.delete-member-btn');
+                if (!deleteButton) {
+                    return; // Click wasn't on a delete button
+                }
 
-        // Remove the previous form submission handler since we now have functioning backend
-        document.querySelectorAll('form').forEach(form => {
-            // Clone the form to remove event listeners
-            const newForm = form.cloneNode(true);
-            form.parentNode.replaceChild(newForm, form);
-            
-            // Re-add the password toggle functionality for the new form
-            newForm.querySelectorAll('.toggle-password').forEach(button => {
-                button.addEventListener('click', function() {
-                    const input = this.previousElementSibling;
-                    const icon = this.querySelector('i');
-                    
-                    if (input.type === 'password') {
-                        input.type = 'text';
-                        icon.classList.remove('fa-eye');
-                        icon.classList.add('fa-eye-slash');
-                    } else {
-                        input.type = 'password';
-                        icon.classList.remove('fa-eye-slash');
-                        icon.classList.add('fa-eye');
-                    }
-                });
+                const memberId = deleteButton.dataset.memberId;
+                if (!memberId) {
+                    console.error('Member ID not found on button.');
+                    return;
+                }
+
+                if (confirm('Are you sure you want to delete this household member?')) {
+                    // Disable button during request
+                    deleteButton.disabled = true;
+                    deleteButton.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+
+                    fetch(`<?= base_url('dashboard/deleteMember/') ?>${memberId}`, {
+                        method: 'POST',
+                        headers: {
+                            'X-Requested-With': 'XMLHttpRequest',
+                            'Content-Type': 'application/json',
+                        },
+                    })
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.success) {
+                            // Remove the table row
+                            const rowToRemove = document.getElementById(`member-row-${memberId}`);
+                            if (rowToRemove) {
+                                rowToRemove.remove();
+                                alert(data.message);
+                                
+                                // Check if table is now empty
+                                if (tableBody.querySelectorAll('tr').length === 0) {
+                                     tableBody.innerHTML = '<tr><td colspan="5" class="text-center">No household members added yet.</td></tr>';
+                                }
+                            } else {
+                                alert('Could not find the row to remove.');
+                            }
+                        } else {
+                            alert('Error deleting member: ' + data.message);
+                        }
+                    })
+                    .catch(error => {
+                        console.error('Error deleting member:', error);
+                        alert('An error occurred while trying to delete the member.');
+                    })
+                    .finally(() => {
+                        // Re-enable button
+                        deleteButton.disabled = false;
+                        deleteButton.innerHTML = '<i class="fas fa-trash-alt"></i>';
+                    });
+                }
             });
-        });
-
-        // Clear password form if needed
-        <?php if(session()->getFlashdata('clear_form')): ?>
-        // Reset the password change form
-        if (document.getElementById('passwordChangeForm')) {
-            document.getElementById('passwordChangeForm').reset();
         }
-        // Clear any remaining password fields
-        document.querySelectorAll('input[type="password"]').forEach(input => {
-            input.value = '';
-        });
-        // Add security attribute to prevent browsers from auto-filling
-        document.querySelectorAll('input[type="password"]').forEach(input => {
-            input.setAttribute('autocomplete', 'new-password');
-        });
-        <?php endif; ?>
     </script>
 </body>
 </html> 

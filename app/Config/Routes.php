@@ -61,6 +61,9 @@ $routes->get('settings', 'Settings::index');
 $routes->get('dashboard/resident', 'Dashboard::residentDashboard');
 $routes->get('dashboard/profile', 'Dashboard::profile');
 $routes->post('dashboard/change-password', 'Dashboard::changePassword');
+$routes->post('dashboard/savePersonalInfo', 'Dashboard::savePersonalInfo');
+$routes->post('dashboard/saveResidentRegistration', 'Dashboard::saveResidentRegistration');
+$routes->post('dashboard/deleteMember/(:num)', 'Dashboard::deleteHouseholdMember/$1');
 
 // Auth Routes
 $routes->get('auth/resident/login', 'Auth::residentLogin');

@@ -6,46 +6,59 @@ use CodeIgniter\Model;
 
 class HouseholdModel extends Model
 {
-    protected $table = 'households';
-    protected $primaryKey = 'id';
+    protected $table            = 'households';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType = 'array';
-    protected $useSoftDeletes = false;
-    protected $allowedFields = [
-        'household_name',
+    protected $returnType       = 'array';
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = true;
+    protected $allowedFields    = [
+        'resident_id',
         'household_head',
-        'address',
-        'contact',
-        'created_at',
-        'updated_at'
+        'house_type',
+        'ownership_status',
+        'number_of_rooms',
+        'household_address',
+        // Timestamps are handled automatically
     ];
 
     // Dates
     protected $useTimestamps = true;
-    protected $dateFormat = 'datetime';
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+    // protected $deletedField  = 'deleted_at'; // Uncomment if using soft deletes
 
     // Validation
-    protected $validationRules = [
-        'household_name' => 'required|min_length[3]|max_length[100]',
-        'address'        => 'required|min_length[5]|max_length[255]'
+    protected $validationRules      = [
+        'resident_id' => 'required|integer',
+        'household_head' => 'permit_empty|max_length[255]',
+        'house_type' => 'permit_empty|max_length[100]',
+        'ownership_status' => 'permit_empty|max_length[100]',
+        'number_of_rooms' => 'permit_empty|integer|max_length[5]',
+        'household_address' => 'permit_empty|max_length[65535]', // TEXT max length
     ];
-    
-    protected $validationMessages = [
-        'household_name' => [
-            'required'   => 'Household name is required',
-            'min_length' => 'Household name must be at least 3 characters long',
-            'max_length' => 'Household name cannot exceed 100 characters'
-        ],
-        'address' => [
-            'required'   => 'Address is required',
-            'min_length' => 'Address must be at least 5 characters long',
-            'max_length' => 'Address cannot exceed 255 characters'
-        ]
-    ];
+    protected $validationMessages   = [];
+    protected $skipValidation       = false;
+    protected $cleanValidationRules = true;
 
-    protected $skipValidation = false;
+    // Callbacks
+    protected $allowCallbacks = true;
+    protected $beforeInsert   = [];
+    protected $afterInsert    = [];
+    protected $beforeUpdate   = [];
+    protected $afterUpdate    = [];
+    protected $beforeFind     = [];
+    protected $afterFind      = [];
+    protected $beforeDelete   = [];
+    protected $afterDelete    = [];
+
+    // Add any custom methods here if needed
+    // Example: Find household by resident ID
+    public function findByResidentId($residentId)
+    {
+        return $this->where('resident_id', $residentId)->first();
+    }
 
     /**
      * Get all households with their head resident details

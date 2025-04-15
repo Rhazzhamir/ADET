@@ -408,7 +408,6 @@
         <div class="dashboard-card">
             <div class="card-header">
                 <h4 class="mb-0">Welcome to DISTRICT IV </h4>
-                <span class="badge bg-warning text-dark">Profile Incomplete</span>
             </div>
             <div class="card-body">
                 <div class="welcome-section">
@@ -425,7 +424,7 @@
                     <div class="progress">
                         <div class="progress-bar" role="progressbar" style="width: 25%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                     </div>
-                    <div class="progress-steps">
+                    <div class="progress-steps">    
                         <div class="progress-step completed">Basic Info</div>
                         <div class="progress-step active">Contact Info</div>
                         <div class="progress-step">Household Details</div>
@@ -500,17 +499,8 @@
                                 <input type="text" class="form-control" id="nationality" name="nationality" 
                                        placeholder="" value="<?= !empty($resident['nationality']) ? esc($resident['nationality']) : 'Filipino' ?>">
                             </div>
-                        </div>
-                        <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Save Basic Info
-                            </button>
-                        </div>
-                    </div>
 
-                    <div class="form-section">
-                        <h5 class="form-section-title"><i class="fas fa-address-card me-2"></i>Contact Information</h5>
-                        <div class="row">
+                            <!-- Contact Info Fields Moved Here -->
                             <div class="col-md-6 mb-3">
                                 <label for="email" class="form-label">EMAIL ADDRESS</label>
                                 <input type="email" class="form-control" id="email" name="email" required 
@@ -529,7 +519,7 @@
                         </div>
                         <div class="text-end mt-3">
                             <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Save Contact Info
+                                <i class="fas fa-save me-2"></i>Save Basic Info
                             </button>
                         </div>
                     </div>
@@ -544,101 +534,112 @@
                 <span class="badge bg-primary">Step 2 of 2</span>
             </div>
             <div class="card-body">
-                <form id="householdForm">
-                    <div class="form-section">
-                        <h5 class="form-section-title"><i class="fas fa-house-user me-2"></i>Household Details</h5>
-                        <div class="row">
-                            <div class="col-md-6 mb-3">
-                                <label for="householdHead" class="form-label">Household Head</label>
-                                <input type="text" class="form-control" id="householdHead" required placeholder="Enter name of household head">
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="houseType" class="form-label">House Type</label>
-                                <select class="form-select" id="houseType" required>
-                                    <option value="" selected disabled>Select House Type</option>
-                                    <option value="apartment">Apartment</option>
-                                    <option value="single_house">Single House</option>
-                                    <option value="duplex">Duplex</option>
-                                    <option value="condominium">Condominium</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="ownershipStatus" class="form-label">Ownership Status</label>
-                                <select class="form-select" id="ownershipStatus" required>
-                                    <option value="" selected disabled>Select Status</option>
-                                    <option value="owned">Owned</option>
-                                    <option value="rented">Rented</option>
-                                    <option value="borrowed">Borrowed</option>
-                                    <option value="other">Other</option>
-                                </select>
-                            </div>
-                            <div class="col-md-6 mb-3">
-                                <label for="numberOfRooms" class="form-label">Number of Rooms</label>
-                                <input type="number" class="form-control" id="numberOfRooms" min="1" required placeholder="Enter number of rooms">
-                            </div>
-                            <div class="col-md-12 mb-3">
-                                <label for="householdAddress" class="form-label">Household Address</label>
-                                <textarea class="form-control" id="householdAddress" rows="2" required placeholder="Enter your household address"></textarea>
-                            </div>
-                        </div>
-                        <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Save Household Details
-                            </button>
+                <form id="householdRegistrationForm" action="<?= base_url('dashboard/saveResidentRegistration') ?>" method="POST">
+                    <?= csrf_field() ?> <!-- Important: Add CSRF protection -->
+
+                    <!-- Welcome Message -->
+                    <div class="alert alert-info d-flex align-items-center mb-4" role="alert">
+                        <i class="fas fa-info-circle me-2"></i>
+                        <div>
+                            Please complete your profile information!
                         </div>
                     </div>
 
-                    <div class="form-section">
-                        <h5 class="form-section-title"><i class="fas fa-users me-2"></i>Household Members</h5>
-                        <div class="alert alert-info mb-3">
-                            <i class="fas fa-info-circle me-2"></i>
-                            Add all members of your household, including yourself.
-                        </div>
-                        <div class="row mb-3">
+                    <!-- Combined Registration Section -->
+                    <div class="form-section mb-4"> 
+
+
+                        <!-- Household Details Subsection -->
+                        <h5 class="form-section-title text-primary"><i class="fas fa-home me-2"></i>Household Details</h5>
+                        <div class="row g-3 mb-4">
+                            <div class="col-md-6">
+                                <label for="household_head" class="form-label">Household Head</label>
+                                <input type="text" class="form-control" id="household_head" name="household_head" placeholder="Enter full name">
+                            </div>
+                            <div class="col-md-6">
+                                <label for="house_type" class="form-label">House Type</label>
+                                <select class="form-select" id="house_type" name="house_type">
+                                    <option selected disabled value="">Select House Type</option>
+                                    <option value="Owned">Owned</option>
+                                    <option value="Rented">Rented</option>
+                                    <option value="Living with Relatives">Living with Relatives</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="ownership_status" class="form-label">Ownership Status</label>
+                                <select class="form-select" id="ownership_status" name="ownership_status">
+                                    <option selected disabled value="">Select Status</option>
+                                    <option value="Owner">Owner</option>
+                                    <option value="Renter">Renter</option>
+                                    <option value="Sharer">Sharer</option>
+                                    <!-- Add more options as needed -->
+                                </select>
+                            </div>
+                            <div class="col-md-6">
+                                <label for="number_of_rooms" class="form-label">Number of Rooms</label>
+                                <input type="number" class="form-control" id="number_of_rooms" name="number_of_rooms" min="1">
+                            </div>
                             <div class="col-12">
-                                <button type="button" class="btn btn-outline-primary" id="addMemberBtn">
-                                    <i class="fas fa-plus me-2"></i>Add Household Member
-                                </button>
+                                <label for="household_address" class="form-label">Household Address</label>
+                                <textarea class="form-control" id="household_address" name="household_address" rows="3" placeholder="Enter household address"></textarea>
                             </div>
                         </div>
-                        <div id="householdMembers">
-                            <!-- Member entries will be added here dynamically -->
-                            <div class="row member-entry mb-3">
+
+                        <hr class="my-4">
+
+                        <!-- Household Members Subsection -->
+                        <h5 class="form-section-title text-info"><i class="fas fa-users me-2"></i>Household Members</h5>
+                        <div class="alert alert-secondary d-flex align-items-center" role="alert">
+                            <i class="fas fa-info-circle me-2"></i>
+                            <div>
+                                Add all members of your household, including yourself.
+                            </div>
+                        </div>
+
+                        <div id="household-members-container">
+                            <!-- Initial member row (can be pre-filled or empty) -->
+                            <div class="row g-3 align-items-end household-member-row mb-3">
                                 <div class="col-md-4">
                                     <label class="form-label">Full Name</label>
-                                    <input type="text" class="form-control" placeholder="Enter full name" required>
+                                    <input type="text" class="form-control" name="members[0][full_name]" placeholder="Full Name">
                                 </div>
                                 <div class="col-md-3">
                                     <label class="form-label">Relationship</label>
-                                    <select class="form-select">
-                                        <option value="" selected disabled>Select</option>
-                                        <option value="self">Self</option>
-                                        <option value="spouse">Spouse</option>
-                                        <option value="child">Child</option>
-                                        <option value="parent">Parent</option>
-                                        <option value="sibling">Sibling</option>
-                                        <option value="other">Other</option>
+                                    <select class="form-select" name="members[0][relationship]">
+                                        <option selected disabled value="">Select</option>
+                                        <option value="Head">Head</option>
+                                        <option value="Spouse">Spouse</option>
+                                        <option value="Child">Child</option>
+                                        <option value="Parent">Parent</option>
+                                        <option value="Sibling">Sibling</option>
+                                        <option value="Other Relative">Other Relative</option>
+                                        <option value="Non-Relative">Non-Relative</option>
                                     </select>
                                 </div>
-                                <div class="col-md-3">
-                                    <label class="form-label">Age</label>
-                                    <input type="number" class="form-control" min="0" max="120" required placeholder="Age">
-                                </div>
                                 <div class="col-md-2">
-                                    <label class="form-label">&nbsp;</label>
-                                    <button type="button" class="btn btn-danger form-control remove-member">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    <label class="form-label">Age</label>
+                                    <input type="number" class="form-control" name="members[0][age]" min="0">
+                                </div>
+                                <div class="col-md-auto">
+                                    <!-- Add a remove button for dynamically added rows -->
+                                    <button type="button" class="btn btn-danger remove-member-btn" style="display: none;"><i class="fas fa-trash"></i></button>
                                 </div>
                             </div>
+                            <!-- Member rows will be added here by JavaScript -->
                         </div>
-                        <div class="text-end mt-3">
-                            <button type="submit" class="btn btn-primary">
-                                <i class="fas fa-save me-2"></i>Save Household Members
-                            </button>
-                        </div>
+
+                        <button type="button" class="btn btn-outline-success mt-2 mb-4" id="add-household-member-btn">
+                            <i class="fas fa-plus me-1"></i> Add Household Member
+                        </button>
+                    
+                    </div> <!-- End Combined Registration Section -->
+
+                    <!-- Main Submit Button -->
+                    <div class="d-grid gap-2">
+                         <button type="submit" class="btn btn-primary btn-lg">Save Registration Details</button>
                     </div>
+
                 </form>
             </div>
         </div>
@@ -693,34 +694,35 @@
         });
 
         // Simple script to add household members dynamically
-        document.getElementById('addMemberBtn').addEventListener('click', function() {
-            const membersContainer = document.getElementById('householdMembers');
+        document.getElementById('add-household-member-btn').addEventListener('click', function() {
+            const membersContainer = document.getElementById('household-members-container');
             const newMember = document.createElement('div');
-            newMember.className = 'row member-entry mb-3';
+            newMember.className = 'row g-3 align-items-end household-member-row mb-3';
             newMember.innerHTML = `
                 <div class="col-md-4">
                     <label class="form-label">Full Name</label>
-                    <input type="text" class="form-control" placeholder="Enter full name" required>
+                    <input type="text" class="form-control" name="members[${membersContainer.children.length}][full_name]" placeholder="Full Name">
                 </div>
                 <div class="col-md-3">
                     <label class="form-label">Relationship</label>
-                    <select class="form-select">
-                        <option value="" selected disabled>Select</option>
-                        <option value="self">Self</option>
-                        <option value="spouse">Spouse</option>
-                        <option value="child">Child</option>
-                        <option value="parent">Parent</option>
-                        <option value="sibling">Sibling</option>
-                        <option value="other">Other</option>
+                    <select class="form-select" name="members[${membersContainer.children.length}][relationship]">
+                        <option selected disabled value="">Select</option>
+                        <option value="Head">Head</option>
+                        <option value="Spouse">Spouse</option>
+                        <option value="Child">Child</option>
+                        <option value="Parent">Parent</option>
+                        <option value="Sibling">Sibling</option>
+                        <option value="Other Relative">Other Relative</option>
+                        <option value="Non-Relative">Non-Relative</option>
                     </select>
                 </div>
-                <div class="col-md-3">
-                    <label class="form-label">Age</label>
-                    <input type="number" class="form-control" min="0" max="120" required placeholder="Age">
-                </div>
                 <div class="col-md-2">
-                    <label class="form-label">&nbsp;</label>
-                    <button type="button" class="btn btn-danger form-control remove-member">
+                    <label class="form-label">Age</label>
+                    <input type="number" class="form-control" name="members[${membersContainer.children.length}][age]" min="0">
+                </div>
+                <div class="col-md-auto">
+                    <!-- Add a remove button for dynamically added rows -->
+                    <button type="button" class="btn btn-danger remove-member-btn">
                         <i class="fas fa-trash"></i>
                     </button>
                 </div>
@@ -729,10 +731,196 @@
         });
 
         // Event delegation for removing members
-        document.getElementById('householdMembers').addEventListener('click', function(e) {
-            if (e.target.closest('.remove-member')) {
-                e.target.closest('.member-entry').remove();
+        document.getElementById('household-members-container').addEventListener('click', function(e) {
+            if (e.target.closest('.remove-member-btn')) {
+                e.target.closest('.household-member-row').remove();
             }
+        });
+
+        // Basic Info Form Submission Handler
+        document.getElementById('personalInfoForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            // Get form data
+            const formData = new FormData(this);
+            
+            // Show loading state
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+            
+            // Send AJAX request
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // Show success message
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-check-circle me-2"></i>${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    this.insertBefore(alertDiv, this.firstChild);
+                    
+                    // Update progress bar
+                    const progressBar = document.querySelector('.progress-bar');
+                    if (progressBar) {
+                        progressBar.style.width = '50%';
+                        progressBar.setAttribute('aria-valuenow', '50');
+                    }
+                    
+                    // Update progress steps
+                    const progressSteps = document.querySelectorAll('.progress-step');
+                    if (progressSteps.length >= 2) {
+                        progressSteps[1].classList.add('completed');
+                        progressSteps[2].classList.add('active');
+                    }
+                    
+                    // Update welcome message if name changed
+                    const fullNameElement = document.querySelector('.resident-full-name');
+                    if (fullNameElement && data.resident_name) {
+                        fullNameElement.textContent = data.resident_name.toUpperCase();
+                    }
+                } else {
+                    // Show error message
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-exclamation-circle me-2"></i>${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    this.insertBefore(alertDiv, this.firstChild);
+                }
+            })
+            .catch(error => {
+                // Show error message
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-danger alert-dismissible fade show';
+                alertDiv.innerHTML = `
+                    <i class="fas fa-exclamation-circle me-2"></i>An error occurred while saving. Please try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                this.insertBefore(alertDiv, this.firstChild);
+            })
+            .finally(() => {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            });
+        });
+
+        // Household Registration Form Submission Handler
+        document.getElementById('householdRegistrationForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // Get form data
+            const formData = new FormData(this);
+            const submitButton = this.querySelector('button[type="submit"]');
+            const originalButtonText = submitButton.innerHTML;
+
+            // Clear previous alerts
+            const existingAlert = this.querySelector('.alert');
+            if (existingAlert) {
+                existingAlert.remove();
+            }
+
+            // Show loading state
+            submitButton.disabled = true;
+            submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Saving...';
+
+            // Include CSRF token if present
+            const csrfInput = this.querySelector('input[name="csrf_test_name"]');
+            if (csrfInput) {
+                 formData.append(csrfInput.name, csrfInput.value);
+            }
+
+            // Send AJAX request
+            fetch(this.action, {
+                method: 'POST',
+                body: formData,
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                // Update CSRF token if provided in response (good practice)
+                if (data.csrf_token) {
+                    if (csrfInput) {
+                        csrfInput.value = data.csrf_token;
+                    }
+                }
+                
+                if (data.success) {
+                    // Show success message
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-success alert-dismissible fade show mt-3';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-check-circle me-2"></i>${data.message}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    this.insertAdjacentElement('afterbegin', alertDiv);
+
+                    // Update progress bar to 100%
+                    const progressBar = document.querySelector('.progress-bar');
+                    if (progressBar) {
+                        progressBar.style.width = '100%';
+                        progressBar.setAttribute('aria-valuenow', '100');
+                    }
+
+                    // Update progress steps (mark all as completed)
+                    const progressSteps = document.querySelectorAll('.progress-step');
+                    progressSteps.forEach(step => step.classList.add('completed'));
+                    progressSteps.forEach(step => step.classList.remove('active')); 
+                    
+                    // Optionally, redirect or disable form after success
+                     // submitButton.textContent = 'Saved Successfully';
+                     // window.location.href = '<?= base_url("dashboard/profile") ?>'; // Redirect to profile
+
+                } else {
+                    // Show error message (including validation errors)
+                    let errorMessage = data.message;
+                    if (data.errors) {
+                        errorMessage += '<br><ul>';
+                        for (const field in data.errors) {
+                            errorMessage += `<li>${data.errors[field]}</li>`;
+                        }
+                        errorMessage += '</ul>';
+                    }
+
+                    const alertDiv = document.createElement('div');
+                    alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
+                    alertDiv.innerHTML = `
+                        <i class="fas fa-exclamation-circle me-2"></i>${errorMessage}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                    `;
+                    this.insertAdjacentElement('afterbegin', alertDiv);
+                }
+            })
+            .catch(error => {
+                console.error('Error submitting household form:', error);
+                // Show generic error message
+                const alertDiv = document.createElement('div');
+                alertDiv.className = 'alert alert-danger alert-dismissible fade show mt-3';
+                alertDiv.innerHTML = `
+                    <i class="fas fa-exclamation-circle me-2"></i>An error occurred while saving. Please try again.
+                    <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+                `;
+                this.insertAdjacentElement('afterbegin', alertDiv);
+            })
+            .finally(() => {
+                // Reset button state
+                submitButton.disabled = false;
+                submitButton.innerHTML = originalButtonText;
+            });
         });
     </script>
 </body>
