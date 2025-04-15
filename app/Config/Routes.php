@@ -32,9 +32,7 @@ $routes->get('home', 'Home::index');
 
 // Admin Routes
 $routes->get('admin', 'Residents::index');
-$routes->get('admin/add', 'Residents::add');
 $routes->post('admin/save', 'Residents::save');
-$routes->get('admin/households', 'Residents::households');
 $routes->post('admin/saveHousehold', 'Residents::saveHousehold');
 
 // Profile Picture Upload Route

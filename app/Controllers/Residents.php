@@ -13,24 +13,6 @@ class Residents extends BaseController
         return view('residents/index', $data);
     }
 
-    public function add()
-    {
-        $data = [
-            'title' => 'Add New Resident',
-            'active_menu' => 'residents'
-        ];
-        return view('residents/add', $data);
-    }
-
-    public function households()
-    {
-        $data = [
-            'title' => 'Households',
-            'active_menu' => 'residents'
-        ];
-        return view('residents/households', $data);
-    }
-
     public function edit($id = null)
     {
         if (!$id) {
@@ -57,12 +39,6 @@ class Residents extends BaseController
         ];
         
         return view('residents/edit', $data);
-    }
-
-    public function save()
-    {
-        // Handle resident save logic here
-        return redirect()->to('/admin');
     }
 
     public function update()
@@ -92,12 +68,6 @@ class Residents extends BaseController
         }
     }
 
-    public function saveHousehold()
-    {
-        // Handle household save logic here
-        return redirect()->to('/admin/households');
-    }
-    
     public function uploadProfilePicture()
     {
         // Check if this is an AJAX request
