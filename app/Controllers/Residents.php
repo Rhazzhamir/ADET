@@ -111,7 +111,7 @@ class Residents extends BaseController
         $newName = $residentId . '_' . time() . '.' . $file->getExtension();
         
         // Make sure the upload directory exists
-        $uploadPath = 'uploads/profile_pictures';
+        $uploadPath = FCPATH . 'uploads/profile_pictures';
         if (!is_dir($uploadPath)) {
             if (!mkdir($uploadPath, 0777, true)) {
                 log_message('error', "Failed to create directory: {$uploadPath}");
@@ -128,12 +128,15 @@ class Residents extends BaseController
         try {
             if ($file->move($uploadPath, $newName)) {
                 // Delete old profile picture if exists
-                if (!empty($resident['profile_picture']) && file_exists($resident['profile_picture'])) {
-                    @unlink($resident['profile_picture']);
+                if (!empty($resident['profile_picture'])) {
+                    $oldPath = FCPATH . $resident['profile_picture'];
+                    if (file_exists($oldPath)) {
+                        @unlink($oldPath);
+                    }
                 }
                 
-                // Update database with new profile picture path
-                $profilePicturePath = $uploadPath . '/' . $newName;
+                // Update database with new profile picture path (relative to web root)
+                $profilePicturePath = 'uploads/profile_pictures/' . $newName;
                 $residentModel->update($residentId, ['profile_picture' => $profilePicturePath]);
                 
                 return $this->response->setJSON([

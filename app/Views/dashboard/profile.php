@@ -173,10 +173,13 @@
             border: 5px solid white;
         }
 
-        .profile-avatar img {
+        .profile-avatar img.profile-image {
             width: 100%;
             height: 100%;
             object-fit: cover;
+            position: absolute;
+            top: 0;
+            left: 0;
         }
 
         .profile-avatar .avatar-placeholder {
@@ -185,6 +188,7 @@
             justify-content: center;
             width: 100%;
             height: 100%;
+            z-index: 1;
         }
 
         .profile-avatar .avatar-edit {
@@ -674,12 +678,14 @@
             <div class="card-body">
                 <div class="profile-header">
                     <div class="profile-avatar">
+                        <?php if (!empty($resident['profile_picture'])): ?>
+                            <img src="<?= $resident['profile_picture'] ?>" alt="Profile Picture" class="profile-image">
+                        <?php else: ?>
                         <div class="avatar-placeholder">
                             <i class="fas fa-user"></i>
                         </div>
-                        <label for="profilePicInput" class="avatar-edit" title="Upload Profile Picture">
-                            <i class="fas fa-camera"></i>
-                        </label>
+                        <?php endif; ?>
+
                         <input type="file" id="profilePicInput" class="d-none" accept="image/*">
                     </div>
                     <div class="profile-info">
@@ -998,8 +1004,7 @@
 
             // Profile picture upload functionality
             const profilePicInput = document.getElementById('profilePicInput');
-            const avatarPlaceholder = document.querySelector('.avatar-placeholder');
-            const avatarEdit = document.querySelector('.avatar-edit');
+            const profileAvatar = document.querySelector('.profile-avatar');
 
             if (profilePicInput) {
                 profilePicInput.addEventListener('change', function(e) {
@@ -1021,24 +1026,22 @@
                         // Preview the image
                         const reader = new FileReader();
                         reader.onload = function(e) {
-                            // Create image element if it doesn't exist
-                            let img = avatarPlaceholder.querySelector('img');
+                            // Create or update image element
+                            let img = profileAvatar.querySelector('img.profile-image');
+                            const placeholder = profileAvatar.querySelector('.avatar-placeholder');
+                            
                             if (!img) {
                                 img = document.createElement('img');
-                                avatarPlaceholder.appendChild(img);
+                                img.className = 'profile-image';
+                                if (placeholder) {
+                                    placeholder.remove();
+                                }
+                                profileAvatar.insertBefore(img, profileAvatar.firstChild);
                             }
                             
                             // Update image source
                             img.src = e.target.result;
-                            img.style.width = '100%';
-                            img.style.height = '100%';
-                            img.style.objectFit = 'cover';
-                            
-                            // Hide the placeholder icon
-                            const icon = avatarPlaceholder.querySelector('i');
-                            if (icon) {
-                                icon.style.display = 'none';
-                            }
+                            img.alt = 'Profile Picture';
                             
                             // Upload the image
                             uploadProfilePicture(file);
@@ -1076,7 +1079,7 @@
                         alert('Error: ' + data.error);
                     } else {
                         // Update the profile picture in the UI
-                        const img = avatarPlaceholder.querySelector('img');
+                        const img = profileAvatar.querySelector('img.profile-image');
                         if (img) {
                             img.src = data.profile_picture_url;
                         }

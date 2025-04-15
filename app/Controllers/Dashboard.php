@@ -56,6 +56,11 @@ class Dashboard extends BaseController
             return redirect()->to(base_url('auth/resident/login')); // Redirect to login if resident not found
         }
 
+        // Convert relative profile picture path to full URL
+        if (!empty($resident['profile_picture'])) {
+            $resident['profile_picture'] = base_url($resident['profile_picture']);
+        }
+
         // Fetch household data
         $householdModel = new HouseholdModel();
         $household = $householdModel->where('resident_id', $residentId)->first();
