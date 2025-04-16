@@ -30,7 +30,9 @@ class Auth extends BaseController
     {
         // Validate form data
         $rules = [
-            'fullName' => 'required|min_length[3]|max_length[100]',
+            'firstName' => 'required|min_length[2]|max_length[50]',
+            'middleName' => 'permit_empty|max_length[50]',
+            'lastName' => 'required|min_length[2]|max_length[50]',
             'email'    => 'required|valid_email|is_unique[residents.email]',
             'phone'    => 'required|min_length[10]|max_length[15]',
             'address'  => 'required|min_length[5]|max_length[255]',
@@ -39,56 +41,27 @@ class Auth extends BaseController
             'terms'    => 'required'
         ];
 
-        $messages = [
-            'fullName' => [
-                'required'   => 'Full name is required',
-                'min_length' => 'Full name must be at least 3 characters long',
-                'max_length' => 'Full name cannot exceed 100 characters'
-            ],
-            'email' => [
-                'required'    => 'Email is required',
-                'valid_email' => 'Please enter a valid email address',
-                'is_unique'   => 'This email is already registered'
-            ],
-            'phone' => [
-                'required'   => 'Phone number is required',
-                'min_length' => 'Phone number must be at least 10 characters long',
-                'max_length' => 'Phone number cannot exceed 15 characters'
-            ],
-            'address' => [
-                'required'   => 'Address is required',
-                'min_length' => 'Address must be at least 5 characters long',
-                'max_length' => 'Address cannot exceed 255 characters'
-            ],
-            'password' => [
-                'required'   => 'Password is required',
-                'min_length' => 'Password must be at least 8 characters long',
-                'max_length' => 'Password cannot exceed 255 characters'
-            ],
-            'confirmPassword' => [
-                'required' => 'Please confirm your password',
-                'matches'  => 'Passwords do not match'
-            ],
-            'terms' => [
-                'required' => 'You must agree to the Terms and Conditions'
-            ]
-        ];
-
-        if (!$this->validate($rules, $messages)) {
-            // Format errors for individual field display
-            $errors = [];
-            foreach ($this->validator->getErrors() as $field => $error) {
-                $errors[$field] = $error;
-            }
-            
-            return redirect()->back()
-                ->withInput()
-                ->with('errors', $errors);
+        if (!$this->validate($rules)) {
+            return redirect()->back()->withInput()->with('errors', $this->validator->getErrors());
         }
 
-        // Prepare data for the model
+        // Get form data
+        $firstName = $this->request->getPost('firstName');
+        $middleName = $this->request->getPost('middleName');
+        $lastName = $this->request->getPost('lastName');
+        
+        // Construct full name
+        $fullName = trim($firstName);
+        if (!empty($middleName)) {
+            $fullName .= ' ' . trim($middleName);
+        }
+        $fullName .= ' ' . trim($lastName);
+
         $data = [
-            'full_name' => $this->request->getPost('fullName'),
+            'first_name' => $firstName,
+            'middle_name' => $middleName,
+            'last_name' => $lastName,
+            'full_name' => $fullName,
             'email'     => $this->request->getPost('email'),
             'phone'     => $this->request->getPost('phone'),
             'address'   => $this->request->getPost('address'),

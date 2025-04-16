@@ -194,14 +194,36 @@
             </div>
             
             <form action="<?= base_url('auth/processResidentRegistration') ?>" method="POST">
-                <div class="mb-3">
-                    <label for="fullName" class="form-label">Full Name</label>
-                    <input type="text" class="form-control <?= session('errors.fullName') ? 'is-invalid' : '' ?>" 
-                           id="fullName" name="fullName" placeholder="Enter your full name" 
-                           value="<?= old('fullName') ?>" required>
-                    <?php if (session('errors.fullName')): ?>
-                        <div class="invalid-feedback"><?= session('errors.fullName') ?></div>
-                    <?php endif; ?>
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <label for="firstName" class="form-label">First Name</label>
+                        <input type="text" class="form-control <?= session('errors.firstName') ? 'is-invalid' : '' ?>" 
+                               id="firstName" name="firstName" placeholder="Enter your first name" 
+                               value="<?= old('firstName') ?>" required>
+                        <?php if (session('errors.firstName')): ?>
+                            <div class="invalid-feedback"><?= session('errors.firstName') ?></div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="middleName" class="form-label">Middle Name</label>
+                        <input type="text" class="form-control <?= session('errors.middleName') ? 'is-invalid' : '' ?>" 
+                               id="middleName" name="middleName" placeholder="Enter your middle name" 
+                               value="<?= old('middleName') ?>">
+                        <?php if (session('errors.middleName')): ?>
+                            <div class="invalid-feedback"><?= session('errors.middleName') ?></div>
+                        <?php endif; ?>
+                    </div>
+                    
+                    <div class="col-md-4 mb-3">
+                        <label for="lastName" class="form-label">Last Name</label>
+                        <input type="text" class="form-control <?= session('errors.lastName') ? 'is-invalid' : '' ?>" 
+                               id="lastName" name="lastName" placeholder="Enter your last name" 
+                               value="<?= old('lastName') ?>" required>
+                        <?php if (session('errors.lastName')): ?>
+                            <div class="invalid-feedback"><?= session('errors.lastName') ?></div>
+                        <?php endif; ?>
+                    </div>
                 </div>
                 
                 <div class="mb-3">

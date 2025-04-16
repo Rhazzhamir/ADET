@@ -3,89 +3,77 @@
 <?= $this->section('content') ?>
 <div class="content">
     <div class="container-fluid">
-        <!-- Quick Stats -->
-        <div class="row mb-4">
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-info">
-                    <div class="inner">
-                        <h3>1,500</h3>
-                        <p>Total Residents</p>
+        <!-- View Resident Modal -->
+        <div class="modal fade" id="viewModal" tabindex="-1" aria-labelledby="viewModalLabel" aria-hidden="true">
+            <div class="modal-dialog modal-lg">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="viewModalLabel">Resident Details</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="icon">
-                        <i class="fas fa-users"></i>
+                    <div class="modal-body">
+                        <div class="row">
+                            <div class="col-md-4">
+                                <p><strong>First Name:</strong></p>
+                                <p id="viewFirstName"></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Middle Name:</strong></p>
+                                <p id="viewMiddleName"></p>
+                            </div>
+                            <div class="col-md-4">
+                                <p><strong>Last Name:</strong></p>
+                                <p id="viewLastName"></p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <p><strong>Email:</strong></p>
+                                <p id="viewEmail"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Phone:</strong></p>
+                                <p id="viewPhone"></p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-12">
+                                <p><strong>Address:</strong></p>
+                                <p id="viewAddress"></p>
+                            </div>
+                        </div>
+                        <div class="row mt-3">
+                            <div class="col-md-6">
+                                <p><strong>Created At:</strong></p>
+                                <p id="viewCreatedAt"></p>
+                            </div>
+                            <div class="col-md-6">
+                                <p><strong>Updated At:</strong></p>
+                                <p id="viewUpdatedAt"></p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-success">
-                    <div class="inner">
-                        <h3>1,450</h3>
-                        <p>Active Residents</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-user-check"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-warning">
-                    <div class="inner">
-                        <h3>50</h3>
-                        <p>Inactive Residents</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-user-times"></i>
-                    </div>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-danger">
-                    <div class="inner">
-                        <h3>450</h3>
-                        <p>Total Households</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-home"></i>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                     </div>
                 </div>
             </div>
         </div>
 
-        <!-- Search and Filter Section -->
-        <div class="card">
-            <div class="card-body">
-                <div class="row">
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <input type="text" class="form-control" placeholder="Search by name...">
-                        </div>
+        <!-- Delete Confirmation Modal -->
+        <div class="modal fade" id="deleteModal" tabindex="-1" aria-labelledby="deleteModalLabel" aria-hidden="true">
+            <div class="modal-dialog">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="deleteModalLabel">Confirm Delete</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <select class="form-control">
-                                <option value="">All Barangay Zones</option>
-                                <option>Zone 1</option>
-                                <option>Zone 2</option>
-                                <option>Zone 3</option>
-                            </select>
-                        </div>
+                    <div class="modal-body">
+                        Are you sure you want to delete this resident?
                     </div>
-                    <div class="col-md-3">
-                        <div class="form-group">
-                            <select class="form-control">
-                                <option value="">All Status</option>
-                                <option>Active</option>
-                                <option>Inactive</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="col-md-3">
-                        <button class="btn btn-primary">
-                            <i class="fas fa-search"></i> Search
-                        </button>
-                        <button class="btn btn-secondary">
-                            <i class="fas fa-sync"></i> Reset
-                        </button>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="button" class="btn btn-danger" id="confirmDelete">Delete</button>
                     </div>
                 </div>
             </div>
@@ -95,18 +83,6 @@
         <div class="card">
             <div class="card-header">
                 <h3 class="card-title">Residents List</h3>
-                <div class="card-tools">
-                    <div class="btn-group">
-                        <button type="button" class="btn btn-tool dropdown-toggle" data-toggle="dropdown">
-                            <i class="fas fa-ellipsis-v"></i>
-                        </button>
-                        <div class="dropdown-menu dropdown-menu-right">
-                            <a href="#" class="dropdown-item"><i class="fas fa-file-export"></i> Export to Excel</a>
-                            <a href="#" class="dropdown-item"><i class="fas fa-file-pdf"></i> Export to PDF</a>
-                            <a href="#" class="dropdown-item"><i class="fas fa-print"></i> Print List</a>
-                        </div>
-                    </div>
-                </div>
             </div>
             <div class="card-body">
                 <div class="table-responsive">
@@ -114,71 +90,139 @@
                         <thead>
                             <tr>
                                 <th style="width: 10px">#</th>
-                                <th>Name</th>
-                                <th>Address</th>
-                                <th>Contact</th>
-                                <th>Zone</th>
-                                <th>Status</th>
+                                <th>FirstName</th>
+                                <th>MiddleName</th>
+                                <th>LastName</th>
+                                <th>Phone Number</th>
+                                <th>Created_at</th>
+                                <th>Updated_at</th>
                                 <th style="width: 150px">Actions</th>
                             </tr>
                         </thead>
                         <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Juan Dela Cruz</td>
-                                <td>123 Main Street, Zone 1</td>
-                                <td>09123456789</td>
-                                <td>Zone 1</td>
-                                <td><span class="badge badge-success">Active</span></td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Maria Santos</td>
-                                <td>456 Oak Street, Zone 2</td>
-                                <td>09234567890</td>
-                                <td>Zone 2</td>
-                                <td><span class="badge badge-success">Active</span></td>
-                                <td>
-                                    <div class="btn-group">
-                                        <a href="#" class="btn btn-sm btn-info">
-                                            <i class="fas fa-eye"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-sm btn-primary">
-                                            <i class="fas fa-edit"></i>
-                                        </a>
-                                        <a href="#" class="btn btn-sm btn-danger">
-                                            <i class="fas fa-trash"></i>
-                                        </a>
-                                    </div>
-                                </td>
-                            </tr>
+                            <?php if (isset($residents) && !empty($residents)): ?>
+                                <?php foreach ($residents as $index => $resident): ?>
+                                    <tr>
+                                        <td><?= $index + 1 ?></td>
+                                        <td><?= esc($resident['FirstName']) ?></td>
+                                        <td><?= esc($resident['MiddleName']) ?></td>
+                                        <td><?= esc($resident['LastName']) ?></td>
+                                        <td><?= esc($resident['Phone_Number']) ?></td>
+                                        <td><?= esc($resident['Created_at']) ?></td>
+                                        <td><?= esc($resident['Updated_at']) ?></td>
+                                        <td>
+                                            <div class="btn-group">
+                                                <button type="button" class="btn btn-sm btn-info view-resident" data-id="<?= $resident['id'] ?>">
+                                                    <i class="fas fa-eye"></i>
+                                                </button>
+                                                <button type="button" class="btn btn-sm btn-danger delete-resident" data-id="<?= $resident['id'] ?>">
+                                                    <i class="fas fa-trash"></i>
+                                                </button>
+                                            </div>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <tr>
+                                    <td colspan="8" class="text-center">No residents found</td>
+                                </tr>
+                            <?php endif; ?>
                         </tbody>
                     </table>
                 </div>
             </div>
-            <div class="card-footer clearfix">
-                <ul class="pagination pagination-sm m-0 float-right">
-                    <li class="page-item"><a class="page-link" href="#">«</a></li>
-                    <li class="page-item active"><a class="page-link" href="#">1</a></li>
-                    <li class="page-item"><a class="page-link" href="#">2</a></li>
-                    <li class="page-item"><a class="page-link" href="#">3</a></li>
-                    <li class="page-item"><a class="page-link" href="#">»</a></li>
-                </ul>
-            </div>
         </div>
     </div>
 </div>
+
+<!-- Add this before the closing body tag -->
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+    // Initialize modals
+    let deleteModal = new bootstrap.Modal(document.getElementById('deleteModal'));
+    let viewModal = new bootstrap.Modal(document.getElementById('viewModal'));
+    let residentIdToDelete = null;
+
+    // View resident functionality
+    document.querySelectorAll('.view-resident').forEach(button => {
+        button.addEventListener('click', function() {
+            const residentId = this.dataset.id;
+            
+            // Fetch resident details
+            fetch(`<?= base_url('admin/view') ?>/${residentId}`, {
+                method: 'GET',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Update modal with resident data
+                    document.getElementById('viewFirstName').textContent = data.data.first_name;
+                    document.getElementById('viewMiddleName').textContent = data.data.middle_name || '-';
+                    document.getElementById('viewLastName').textContent = data.data.last_name;
+                    document.getElementById('viewEmail').textContent = data.data.email;
+                    document.getElementById('viewPhone').textContent = data.data.phone;
+                    document.getElementById('viewAddress').textContent = data.data.address;
+                    document.getElementById('viewCreatedAt').textContent = data.data.created_at;
+                    document.getElementById('viewUpdatedAt').textContent = data.data.updated_at;
+                    
+                    // Show the modal
+                    viewModal.show();
+                } else {
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while fetching resident details');
+            });
+        });
+    });
+
+    // Delete resident functionality
+    document.querySelectorAll('.delete-resident').forEach(button => {
+        button.addEventListener('click', function() {
+            residentIdToDelete = this.dataset.id;
+            deleteModal.show();
+        });
+    });
+
+    // Handle confirm delete button click
+    document.getElementById('confirmDelete').addEventListener('click', function() {
+        if (residentIdToDelete) {
+            // Send delete request
+            fetch(`<?= base_url('admin/delete') ?>/${residentIdToDelete}`, {
+                method: 'DELETE',
+                headers: {
+                    'X-Requested-With': 'XMLHttpRequest'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.status === 'success') {
+                    // Remove the row from the table
+                    const row = document.querySelector(`button[data-id="${residentIdToDelete}"]`).closest('tr');
+                    row.remove();
+                    
+                    // Show success message
+                    alert(data.message);
+                } else {
+                    // Show error message
+                    alert(data.message);
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('An error occurred while deleting the resident');
+            })
+            .finally(() => {
+                deleteModal.hide();
+                residentIdToDelete = null;
+            });
+        }
+    });
+});
+</script>
 <?= $this->endSection() ?> 

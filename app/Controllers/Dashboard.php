@@ -11,7 +11,17 @@ class Dashboard extends BaseController
 {
     public function index()
     {
-        return view('dashboard/index');
+        // Get resident count
+        $residentModel = new ResidentModel();
+        $totalResidents = $residentModel->countAll();
+
+        $data = [
+            'title' => 'Dashboard',
+            'active_menu' => 'dashboard',
+            'total_residents' => $totalResidents
+        ];
+        
+        return view('dashboard/index', $data);
     }
 
     public function residentDashboard()

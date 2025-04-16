@@ -1118,12 +1118,14 @@
             });
         });
 
-        // Form submission handling
-        document.getElementById('passwordChangeForm').addEventListener('submit', function(e) {
-            e.preventDefault();
-            // Add your password change logic here
-            alert('Password change functionality will be implemented soon!');
-        });
+        // Display flash messages if they exist
+        <?php if (session()->getFlashdata('success')): ?>
+            alert('<?= session()->getFlashdata('success') ?>');
+        <?php endif; ?>
+        
+        <?php if (session()->getFlashdata('error')): ?>
+            alert('<?= session()->getFlashdata('error') ?>');
+        <?php endif; ?>
 
         // Household Member Deletion Handler
         const tableBody = document.getElementById('householdMembersTableBody');

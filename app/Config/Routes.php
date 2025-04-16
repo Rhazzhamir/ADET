@@ -31,9 +31,13 @@ $routes->get('dashboard', 'Dashboard::index');
 $routes->get('home', 'Home::index');
 
 // Admin Routes
-$routes->get('admin', 'Residents::index');
-$routes->post('admin/save', 'Residents::save');
+$routes->get('admin', 'ResidentController::index');
+$routes->post('admin/save', 'ResidentController::save');
+$routes->delete('admin/delete/(:num)', 'ResidentController::delete/$1');
+$routes->get('admin/view/(:num)', 'ResidentController::view/$1');
 $routes->post('admin/saveHousehold', 'Residents::saveHousehold');
+$routes->get('admin/residents', 'ResidentController::index');
+$routes->get('admin/residents/view/(:num)', 'ResidentController::viewPage/$1');
 
 // Profile Picture Upload Route
 $routes->post('residents/uploadProfilePicture', 'Residents::uploadProfilePicture');

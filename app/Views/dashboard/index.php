@@ -73,11 +73,6 @@
                             <i class="fas fa-users mr-1"></i>
                             Resident Records
                         </h3>
-                        <div class="card-tools">
-                            <a href="<?= site_url('admin/add') ?>" class="btn btn-tool">
-                                <i class="fas fa-plus"></i> Add New
-                            </a>
-                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -86,7 +81,7 @@
                                     <span class="info-box-icon bg-info"><i class="fas fa-user"></i></span>
                                     <div class="info-box-content">
                                         <span class="info-box-text">Total Residents</span>
-                                        <span class="info-box-number">1,500</span>
+                                        <span class="info-box-number"><?= $total_residents ?></span>
                                     </div>
                                 </div>
                             </div>
