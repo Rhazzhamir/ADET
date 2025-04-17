@@ -15,10 +15,22 @@ class Dashboard extends BaseController
         $residentModel = new ResidentModel();
         $totalResidents = $residentModel->countAll();
 
+        // Get total household members count
+        $householdMemberModel = new HouseholdMemberModel();
+        $totalHouseholdMembers = $householdMemberModel->countAll();
+
+        // Get recent registrations (latest 10)
+        $recentResidents = $residentModel->select('full_name, created_at')
+            ->orderBy('created_at', 'DESC')
+            ->limit(10)
+            ->find();
+
         $data = [
             'title' => 'Dashboard',
             'active_menu' => 'dashboard',
-            'total_residents' => $totalResidents
+            'total_residents' => $totalResidents,
+            'total_household_members' => $totalHouseholdMembers,
+            'recent_residents' => $recentResidents
         ];
         
         return view('dashboard/index', $data);

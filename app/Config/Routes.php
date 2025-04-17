@@ -46,7 +46,7 @@ $routes->get('test-profile-upload', 'Residents::testProfileUpload');
 // Budget Routes
 $routes->get('budget', 'Budget::index');
 $routes->get('budget/expenses', 'Budget::expenses');
-$routes->get('budget/reports', 'Budget::reports');
+$routes->get('budget/budget', 'Budget::reports');
 
 // Officials Routes
 $routes->get('officials', 'Officials::index');

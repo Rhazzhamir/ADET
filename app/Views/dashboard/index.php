@@ -5,7 +5,7 @@
     <div class="container-fluid">
         <!-- Budget Overview -->
         <div class="row">
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-6">
                 <div class="small-box bg-info">
                     <div class="inner">
                         <h3>₱150,000</h3>
@@ -19,35 +19,7 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-success">
-                    <div class="inner">
-                        <h3>₱45,000</h3>
-                        <p>Income This Month</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-chart-line"></i>
-                    </div>
-                    <a href="<?= site_url('budget/income') ?>" class="small-box-footer">
-                        More info <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
-                <div class="small-box bg-warning">
-                    <div class="inner">
-                        <h3>₱30,000</h3>
-                        <p>Expenses This Month</p>
-                    </div>
-                    <div class="icon">
-                        <i class="fas fa-chart-pie"></i>
-                    </div>
-                    <a href="<?= site_url('budget/expenses') ?>" class="small-box-footer">
-                        More info <i class="fas fa-arrow-circle-right"></i>
-                    </a>
-                </div>
-            </div>
-            <div class="col-lg-3 col-6">
+            <div class="col-lg-6">
                 <div class="small-box bg-danger">
                     <div class="inner">
                         <h3>₱15,000</h3>
@@ -73,6 +45,11 @@
                             <i class="fas fa-users mr-1"></i>
                             Resident Records
                         </h3>
+                        <div class="card-tools">
+                            <a href="<?= site_url('admin/residents') ?>" class="btn btn-tool">
+                                <i class="fas fa-list"></i> View All
+                            </a>
+                        </div>
                     </div>
                     <div class="card-body">
                         <div class="row">
@@ -89,32 +66,33 @@
                                 <div class="info-box bg-light">
                                     <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>
                                     <div class="info-box-content">
-                                        <span class="info-box-text">Total Households</span>
-                                        <span class="info-box-number">450</span>
+                                        <span class="info-box-text">Total Households Member</span>
+                                        <span class="info-box-number"><?= $total_household_members ?></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered">
+                            <table class="table table-bordered" data-table="false">
                                 <thead>
                                     <tr>
                                         <th>Recent Registrations</th>
-                                        <th>Date</th>
-                                        <th>Status</th>
+                                        <th>Date Registered</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td>Juan Dela Cruz</td>
-                                        <td>2024-03-15</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                    </tr>
-                                    <tr>
-                                        <td>Maria Santos</td>
-                                        <td>2024-03-14</td>
-                                        <td><span class="badge badge-success">Active</span></td>
-                                    </tr>
+                                    <?php if (isset($recent_residents) && !empty($recent_residents)): ?>
+                                        <?php foreach ($recent_residents as $resident): ?>
+                                            <tr>
+                                                <td><?= esc($resident['full_name']) ?></td>
+                                                <td><?= date('M d, Y', strtotime($resident['created_at'])) ?></td>
+                                            </tr>
+                                        <?php endforeach; ?>
+                                    <?php else: ?>
+                                        <tr>
+                                            <td colspan="2" class="text-center">No recent registrations</td>
+                                        </tr>
+                                    <?php endif; ?>
                                 </tbody>
                             </table>
                         </div>
@@ -197,29 +175,35 @@
                     </div>
                     <div class="card-body">
                         <div class="timeline">
-                            <div class="time-label">
-                                <span class="bg-info">Today</span>
-                            </div>
-                            <div>
-                                <i class="fas fa-user bg-primary"></i>
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i> 12:05</span>
-                                    <h3 class="timeline-header">New Resident Registration</h3>
-                                    <div class="timeline-body">
-                                        Juan Dela Cruz has been registered as a new resident.
+                            <?php if (isset($recent_residents) && !empty($recent_residents)): ?>
+                                <div class="time-label">
+                                    <span class="bg-info">Recent Activities</span>
+                                </div>
+                                <?php foreach ($recent_residents as $resident): ?>
+                                <div>
+                                    <i class="fas fa-user bg-primary"></i>
+                                    <div class="timeline-item">
+                                        <span class="time"><i class="fas fa-clock"></i> <?= date('H:i', strtotime($resident['created_at'])) ?></span>
+                                        <h3 class="timeline-header">New Resident Registration</h3>
+                                        <div class="timeline-body">
+                                            <?= esc($resident['full_name']) ?> has been registered as a new resident.
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                            <div>
-                                <i class="fas fa-money-bill bg-success"></i>
-                                <div class="timeline-item">
-                                    <span class="time"><i class="fas fa-clock"></i> 11:30</span>
-                                    <h3 class="timeline-header">New Budget Entry</h3>
-                                    <div class="timeline-body">
-                                        Monthly allowance of ₱5,000 has been recorded.
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <div class="time-label">
+                                    <span class="bg-info">No Recent Activities</span>
+                                </div>
+                                <div>
+                                    <i class="fas fa-info bg-info"></i>
+                                    <div class="timeline-item">
+                                        <div class="timeline-body">
+                                            No recent activities to display.
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php endif; ?>
                         </div>
                     </div>
                 </div>
