@@ -23,13 +23,14 @@ input[type="number"].year-input {
 }
 </style>
 
+<!-- Budget Management Table -->
 <div class="card">
     <div class="card-header">
         <h3 class="card-title">Budget Management</h3>
         <div class="card-tools">
             <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#addBudgetModal">
                 <i class="fas fa-plus"></i> Add New Budget
-                    </button>
+            </button>
         </div>
     </div>
     <div class="card-body">
@@ -73,7 +74,8 @@ input[type="number"].year-input {
 <div class="modal fade" id="addBudgetModal" tabindex="-1" role="dialog" aria-labelledby="addBudgetModalLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
         <div class="modal-content">
-            <form id="addBudgetForm">
+            <form action="<?= site_url('budget/add') ?>" method="post">
+                <?= csrf_field() ?>
                 <div class="modal-header">
                     <h5 class="modal-title" id="addBudgetModalLabel">Add New Budget</h5>
                     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
@@ -81,11 +83,13 @@ input[type="number"].year-input {
                     </button>
                 </div>
                 <div class="modal-body">
-                    <?= csrf_field() ?>
                     <div class="form-group">
                         <label for="year">Year</label>
-                        <input type="number" class="form-control year-input" id="year" name="year" 
-                               min="2000" max="2099" step="1" value="<?= date('Y') ?>" required>
+                        <select class="form-control" id="year" name="year" required>
+                            <?php for($i = date('Y'); $i <= date('Y') + 10; $i++): ?>
+                                <option value="<?= $i ?>"><?= $i ?></option>
+                            <?php endfor; ?>
+                        </select>
                     </div>
                     <div class="form-group">
                         <label for="amount">Amount</label>
@@ -124,7 +128,7 @@ input[type="number"].year-input {
                                 <label for="edit_year<?= $budget['id'] ?>">Year</label>
                                 <input type="number" class="form-control year-input" id="edit_year<?= $budget['id'] ?>" 
                                        name="year" min="2000" max="2099" step="1" 
-                                       value="<?= date('Y', strtotime($budget['date'])) ?>" required>
+                                       value="<?= $budget['year'] ?>" required>
                             </div>
                             <div class="form-group">
                                 <label for="edit_amount<?= $budget['id'] ?>">Amount</label>
@@ -134,13 +138,13 @@ input[type="number"].year-input {
                                     </div>
                                     <input type="number" class="form-control" id="edit_amount<?= $budget['id'] ?>" 
                                            name="amount" step="0.01" min="0" value="<?= $budget['amount'] ?>" required>
-                </div>
-            </div>
-                    </div>
+                                </div>
+                            </div>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
                             <button type="submit" class="btn btn-primary">Update Budget</button>
-                    </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -159,13 +163,13 @@ input[type="number"].year-input {
                         </div>
                         <div class="modal-body">
                             <p>Are you sure you want to delete this budget record?</p>
-                            <p><strong>Year:</strong> <?= date('Y', strtotime($budget['date'])) ?></p>
+                            <p><strong>Year:</strong> <?= $budget['year'] ?></p>
                             <p><strong>Amount:</strong> ₱<?= number_format($budget['amount'], 2) ?></p>
-                    </div>
+                        </div>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
                             <button type="submit" class="btn btn-danger">Delete</button>
-                    </div>
+                        </div>
                     </form>
                 </div>
             </div>
@@ -173,127 +177,34 @@ input[type="number"].year-input {
     <?php endforeach; ?>
 <?php endif; ?>
 
+<!-- Add this section for displaying flash messages -->
+<?php if (session()->getFlashdata('success')) : ?>
+    <div class="alert alert-success alert-dismissible fade show" role="alert">
+        <?= session()->getFlashdata('success') ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
+
+<?php if (session()->getFlashdata('error')) : ?>
+    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+        <?= session()->getFlashdata('error') ?>
+        <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+        </button>
+    </div>
+<?php endif; ?>
+
+<?= $this->section('scripts') ?>
 <script>
 $(document).ready(function() {
-    // Debug: Log when document is ready
-    console.log('Budget management page initialized');
-
-    // Handle Add Budget Form Submission
-    $('#addBudgetForm').on('submit', function(e) {
-        e.preventDefault();
-        
-        // Debug: Log form data
-        const formData = $(this).serialize();
-        console.log('Submitting budget form with data:', formData);
-        
-        // Show loading state
-        Swal.fire({
-            title: 'Processing...',
-            text: 'Please wait while we save your data.',
-            allowOutsideClick: false,
-            allowEscapeKey: false,
-            allowEnterKey: false,
-            showConfirmButton: false,
-            didOpen: () => {
-                Swal.showLoading();
-            }
-        });
-        
-        // Debug: Log AJAX request
-        console.log('Sending AJAX request to:', '<?= site_url('budget/add') ?>');
-        
-        $.ajax({
-            url: '<?= site_url('budget/add') ?>',
-            type: 'POST',
-            data: formData,
-            dataType: 'json',
-            success: function(response) {
-                // Debug: Log response
-                console.log('Received response:', response);
-                
-                // Close loading state
-                Swal.close();
-                
-                if (response.status === 'success') {
-                    // Debug: Log success
-                    console.log('Budget added successfully');
-                    
-                    // Show success message
-                    Swal.fire({
-                        icon: 'success',
-                        title: 'Success',
-                        text: response.message,
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                    
-                    // Update the table body with new data
-                    if (response.data) {
-                        console.log('Updating table with new data');
-                        $('#budgetTableBody').html(response.data);
-                    }
-                    
-                    // Close the modal
-                    $('#addBudgetModal').modal('hide');
-                    
-                    // Reset the form
-                    $('#addBudgetForm')[0].reset();
-                    
-                    // Reload the page to update the modals
-                    console.log('Reloading page in 1.5 seconds');
-                    setTimeout(function() {
-                        location.reload();
-                    }, 1500);
-                } else {
-                    // Debug: Log error
-                    console.error('Error adding budget:', response.message);
-                    
-                    // Show error message
-                    Swal.fire({
-                        icon: 'error',
-                        title: 'Error',
-                        text: response.message || 'An error occurred while saving the budget.',
-                        toast: true,
-                        position: 'top-end',
-                        showConfirmButton: false,
-                        timer: 3000
-                    });
-                }
-            },
-            error: function(xhr, status, error) {
-                // Debug: Log error details
-                console.error('AJAX Error:', error);
-                console.error('Status:', status);
-                console.error('Response:', xhr.responseText);
-                
-                // Close loading state
-                Swal.close();
-                
-                // Show error message
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Error',
-                    text: 'Failed to add budget. Please try again.',
-                    toast: true,
-                    position: 'top-end',
-                    showConfirmButton: false,
-                    timer: 3000
-                });
-            }
-        });
-    });
-
-    // Debug: Log when modals are opened
-    $('#addBudgetModal').on('show.bs.modal', function () {
-        console.log('Add Budget modal is opening');
-    });
-
-    // Debug: Track form input changes
-    $('#year, #amount').on('change', function() {
-        console.log('Form field changed:', this.id, 'New value:', this.value);
-    });
+    // Auto-hide alerts after 5 seconds
+    setTimeout(function() {
+        $('.alert').alert('close');
+    }, 5000);
 });
 </script>
+<?= $this->endSection() ?>
+
 <?= $this->endSection() ?> 

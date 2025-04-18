@@ -2,104 +2,91 @@
 
 <?= $this->section('content') ?>
 <div class="container-fluid">
+    <div class="row mb-3">
+        <div class="col-12">
+            <h1 class="h3 mb-0 text-gray-800">Official Positions</h1>
+        </div>
+    </div>
+
+    <?php if (session()->has('success')): ?>
+        <div class="alert alert-success alert-dismissible fade show" role="alert">
+            <?= session('success') ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <?php endif; ?>
+
+    <?php if (session()->has('error')): ?>
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            <?= session('error') ?>
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    <?php endif; ?>
+
     <div class="row">
         <div class="col-12">
-            <div class="card">
-                <div class="card-header">
-                    <h3 class="card-title">Official Positions</h3>
-                    <div class="card-tools">
-                        <button type="button" class="btn btn-primary btn-sm" data-toggle="modal" data-target="#addPositionModal">
-                            <i class="fas fa-plus"></i> Add Position
-                        </button>
-                    </div>
-                </div>
+            <div class="card shadow">
                 <div class="card-body">
-                    <table class="table table-bordered">
-                        <thead>
-                            <tr>
-                                <th>Position Name</th>
-                                <th>Description</th>
-                                <th>Number of Officials</th>
-                                <th>Actions</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>Barangay Captain</td>
-                                <td>Chief executive of the barangay</td>
-                                <td>1</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Barangay Kagawad</td>
-                                <td>Barangay council member</td>
-                                <td>7</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Barangay Secretary</td>
-                                <td>Handles barangay documentation</td>
-                                <td>1</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                            <tr>
-                                <td>Barangay Treasurer</td>
-                                <td>Handles barangay finances</td>
-                                <td>1</td>
-                                <td>
-                                    <button class="btn btn-info btn-sm"><i class="fas fa-edit"></i></button>
-                                    <button class="btn btn-danger btn-sm"><i class="fas fa-trash"></i></button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
+                    <div class="table-responsive">
+                        <table class="table table-bordered" id="positionsTable">
+                            <thead>
+                                <tr>
+                                    <th>Position</th>
+                                    <th>Description</th>
+                                    <th>Officials Count</th>
+                                    <th>Status</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <?php foreach ($positions as $position): ?>
+                                    <tr>
+                                        <td><?= esc($position['position_name']) ?></td>
+                                        <td><?= esc($position['description']) ?></td>
+                                        <td>
+                                            <div class="d-flex justify-content-between align-items-center">
+                                                <span><?= $position['current_count'] ?> / <?= $position['max_officials'] ?></span>
+                                                <?php 
+                                                $percentage = ($position['current_count'] / $position['max_officials']) * 100;
+                                                $barClass = $percentage >= 100 ? 'bg-danger' : 
+                                                           ($percentage >= 75 ? 'bg-warning' : 'bg-success');
+                                                ?>
+                                                <div class="progress ml-2" style="width: 100px; height: 10px;">
+                                                    <div class="progress-bar <?= $barClass ?>" 
+                                                         role="progressbar" 
+                                                         style="width: <?= min(100, $percentage) ?>%" 
+                                                         aria-valuenow="<?= $position['current_count'] ?>" 
+                                                         aria-valuemin="0" 
+                                                         aria-valuemax="<?= $position['max_officials'] ?>">
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </td>
+                                        <td>
+                                            <span class="badge badge-<?= $position['is_active'] ? 'success' : 'secondary' ?>">
+                                                <?= $position['is_active'] ? 'Active' : 'Inactive' ?>
+                                            </span>
+                                        </td>
+                                    </tr>
+                                <?php endforeach; ?>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
-<!-- Add Position Modal -->
-<div class="modal fade" id="addPositionModal" tabindex="-1" role="dialog" aria-labelledby="addPositionModalLabel" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h5 class="modal-title" id="addPositionModalLabel">Add New Position</h5>
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                </button>
-            </div>
-            <div class="modal-body">
-                <form>
-                    <div class="form-group">
-                        <label for="positionName">Position Name</label>
-                        <input type="text" class="form-control" id="positionName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="positionDescription">Description</label>
-                        <textarea class="form-control" id="positionDescription" rows="3"></textarea>
-                    </div>
-                    <div class="form-group">
-                        <label for="numberOfOfficials">Number of Officials</label>
-                        <input type="number" class="form-control" id="numberOfOfficials" min="1" value="1" required>
-                    </div>
-                </form>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancel</button>
-                <button type="button" class="btn btn-primary">Save Position</button>
-            </div>
-        </div>
-    </div>
-</div>
+<script>
+$(document).ready(function() {
+    $('#positionsTable').DataTable({
+        "order": [[0, "asc"]],
+        "pageLength": 10
+    });
+});
+</script>
 
 <?= $this->endSection() ?>

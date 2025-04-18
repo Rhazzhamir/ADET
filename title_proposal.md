@@ -1,5 +1,6 @@
 Name: Rhazzhamir I. Aguilar 	Section: BSIT 3-B 
 Activity title:	Barangay Information and Management System
+
 Main Objective:
 “To develop a Barangay Information and Management System that efficiently manages barangay budget records, maintains an updated list of barangay officials and members, resident records”
 Specific Objective: 

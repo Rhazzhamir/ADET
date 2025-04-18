@@ -44,14 +44,24 @@ $routes->post('residents/uploadProfilePicture', 'Residents::uploadProfilePicture
 $routes->get('test-profile-upload', 'Residents::testProfileUpload');
 
 // Budget Routes
-$routes->get('budget', 'Budget::index');
-$routes->get('budget/expenses', 'Budget::expenses');
-$routes->get('budget/budget', 'Budget::reports');
+$routes->group('budget', function($routes) {
+    $routes->get('/', 'Budget::index');
+    $routes->get('budget', 'Budget::index');
+    $routes->get('reports', 'Budget::reports');
+    $routes->post('add', 'Budget::add');
+    $routes->post('store', 'Budget::store');
+    $routes->post('update/(:num)', 'Budget::update/$1');
+    $routes->post('delete/(:num)', 'Budget::delete/$1');
+    $routes->get('yearly-total/(:num)', 'Budget::getYearlyTotal/$1');
+});
 
 // Officials Routes
 $routes->get('officials', 'Officials::index');
 $routes->get('officials/add', 'Officials::add');
-$routes->post('officials/save', 'Officials::save');
+$routes->post('officials/add', 'Officials::add');
+$routes->get('officials/edit/(:num)', 'Officials::edit/$1');
+$routes->post('officials/edit/(:num)', 'Officials::edit/$1');
+$routes->post('officials/delete/(:num)', 'Officials::delete/$1');
 $routes->get('officials/positions', 'Officials::positions');
 
 // Legal Routes
@@ -80,6 +90,12 @@ $routes->get('auth/logout', 'Auth::logout');
 
 // Resident Dashboard Routes
 $routes->get('resident/dashboard', 'Dashboard::residentDashboard');
+
+// Expenses Routes
+$routes->get('expenses', 'Expenses::index');
+$routes->post('expenses/add', 'Expenses::add');
+$routes->post('expenses/update/(:num)', 'Expenses::update/$1');
+$routes->post('expenses/delete/(:num)', 'Expenses::delete/$1');
 
 /*
  * --------------------------------------------------------------------

@@ -20,43 +20,242 @@ class Budget extends BaseController
     {
         $data = [
             'title' => 'Budget Management',
-            'active_menu' => 'budget',
-            'budgets' => $this->budgetModel->orderBy('year', 'DESC')->findAll()
+            'budgets' => $this->budgetModel->findAll()
         ];
-        
-        return view('budget/budget', $data);
+
+        return view('budget/index', $data);
     }
 
-    public function add()
+    public function create()
     {
-        if (!$this->request->isAJAX()) {
-            log_message('error', 'Budget add: Non-AJAX request received');
-            return $this->fail('Invalid request');
-        }
+        $data = [
+            'title' => 'Add New Budget'
+        ];
 
-        // Log the received data
-        log_message('debug', 'Budget add: Received data - ' . json_encode($this->request->getPost()));
+        return view('budget/create', $data);
+    }
 
-        // Validate CSRF token
-        if (!$this->validateCSRF()) {
-            log_message('error', 'Budget add: CSRF validation failed');
-            return $this->respond([
-                'status' => 'error',
-                'message' => 'Invalid security token'
-            ]);
-        }
-
+    public function store()
+    {
+        // Validation rules
         $rules = [
-            'year' => 'required|numeric|min_length[4]|max_length[4]',
+            'year' => [
+                'rules' => 'required|numeric|exact_length[4]',
+                'errors' => [
+                    'required' => 'Year is required',
+                    'numeric' => 'Year must be a number',
+                    'exact_length' => 'Year must be 4 digits'
+                ]
+            ],
+            'amount' => [
+                'rules' => 'required|numeric|greater_than[0]',
+                'errors' => [
+                    'required' => 'Amount is required',
+                    'numeric' => 'Amount must be a number',
+                    'greater_than' => 'Amount must be greater than 0'
+                ]
+            ]
+        ];
+
+        // Check if it's an AJAX request
+        if ($this->request->isAJAX()) {
+            if (!$this->validate($rules)) {
+                return $this->respond([
+                    'status' => 'error',
+                    'message' => 'Validation failed',
+                    'errors' => $this->validator->getErrors()
+                ]);
+            }
+
+            // Check if budget for this year already exists
+            $existingBudget = $this->budgetModel->where('year', $this->request->getPost('year'))->first();
+            if ($existingBudget) {
+                return $this->respond([
+                    'status' => 'error',
+                    'message' => 'Budget for this year already exists'
+                ]);
+            }
+
+            $data = [
+                'year' => $this->request->getPost('year'),
+                'amount' => $this->request->getPost('amount')
+            ];
+
+            try {
+                $this->budgetModel->insert($data);
+                
+                // Get updated budget list for the table
+                $budgets = $this->budgetModel->findAll();
+                $html = view('budget/partials/budget_table', ['budgets' => $budgets]);
+                
+                return $this->respond([
+                    'status' => 'success',
+                    'message' => 'Budget added successfully',
+                    'data' => $html
+                ]);
+            } catch (\Exception $e) {
+                return $this->respond([
+                    'status' => 'error',
+                    'message' => 'Failed to add budget: ' . $e->getMessage()
+                ]);
+            }
+        } else {
+            // Regular form submission
+            if (!$this->validate($rules)) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('errors', $this->validator->getErrors());
+            }
+
+            // Check if budget for this year already exists
+            $existingBudget = $this->budgetModel->where('year', $this->request->getPost('year'))->first();
+            if ($existingBudget) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Budget for this year already exists');
+            }
+
+            $data = [
+                'year' => $this->request->getPost('year'),
+                'amount' => $this->request->getPost('amount')
+            ];
+
+            try {
+                $this->budgetModel->insert($data);
+                return redirect()->to('/budget')
+                    ->with('message', 'Budget added successfully');
+            } catch (\Exception $e) {
+                return redirect()->back()
+                    ->withInput()
+                    ->with('error', 'Failed to add budget: ' . $e->getMessage());
+            }
+        }
+    }
+
+    public function edit($id)
+    {
+        $data = [
+            'title' => 'Edit Budget',
+            'budget' => $this->budgetModel->find($id)
+        ];
+
+        if (empty($data['budget'])) {
+            return redirect()->to('/budget')->with('error', 'Budget not found');
+        }
+
+        return view('budget/edit', $data);
+    }
+
+    public function update($id)
+    {
+        $rules = [
+            'year' => 'required|numeric|exact_length[4]',
             'amount' => 'required|numeric|greater_than[0]'
         ];
 
         if (!$this->validate($rules)) {
-            log_message('error', 'Budget add: Validation failed - ' . json_encode($this->validator->getErrors()));
-            return $this->respond([
-                'status' => 'error',
-                'message' => implode(', ', $this->validator->getErrors())
-            ]);
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => implode(', ', $this->validator->getErrors())
+                ]);
+            }
+            return redirect()->back()
+                ->with('error', implode(', ', $this->validator->getErrors()))
+                ->withInput();
+        }
+
+        $data = [
+            'year' => $this->request->getPost('year'),
+            'amount' => $this->request->getPost('amount')
+        ];
+
+        try {
+            $this->budgetModel->update($id, $data);
+            
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Budget updated successfully'
+                ]);
+            }
+            
+            return redirect()->to('/budget')->with('success', 'Budget updated successfully');
+            
+        } catch (\Exception $e) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Failed to update budget: ' . $e->getMessage()
+                ]);
+            }
+            
+            return redirect()->back()
+                ->with('error', 'Failed to update budget: ' . $e->getMessage())
+                ->withInput();
+        }
+    }
+
+    public function delete($id)
+    {
+        try {
+            $this->budgetModel->delete($id);
+            
+            // Check if it's an AJAX request
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'success',
+                    'message' => 'Budget deleted successfully'
+                ]);
+            }
+            
+            // For regular form submission, redirect with success message
+            return redirect()->to('/budget')->with('success', 'Budget deleted successfully');
+            
+        } catch (\Exception $e) {
+            if ($this->request->isAJAX()) {
+                return $this->response->setJSON([
+                    'status' => 'error',
+                    'message' => 'Failed to delete budget: ' . $e->getMessage()
+                ]);
+            }
+            
+            return redirect()->back()->with('error', 'Failed to delete budget: ' . $e->getMessage());
+        }
+    }
+
+    public function getYearlyTotal($year)
+    {
+        $total = $this->budgetModel->getTotalBudgetByYear($year);
+        return $this->response->setJSON(['total' => $total]);
+    }
+
+    public function add()
+    {
+        // Validation rules
+        $rules = [
+            'year' => [
+                'rules' => 'required|numeric|exact_length[4]',
+                'errors' => [
+                    'required' => 'Year is required',
+                    'numeric' => 'Year must be a number',
+                    'exact_length' => 'Year must be 4 digits'
+                ]
+            ],
+            'amount' => [
+                'rules' => 'required|numeric|greater_than[0]',
+                'errors' => [
+                    'required' => 'Amount is required',
+                    'numeric' => 'Amount must be a number',
+                    'greater_than' => 'Amount must be greater than 0'
+                ]
+            ]
+        ];
+
+        if (!$this->validate($rules)) {
+            return redirect()->back()
+                ->with('error', implode(', ', $this->validator->getErrors()))
+                ->withInput();
         }
 
         $year = $this->request->getPost('year');
@@ -65,83 +264,41 @@ class Budget extends BaseController
         // Check if budget for this year already exists
         $existingBudget = $this->budgetModel->where('year', $year)->first();
         if ($existingBudget) {
-            log_message('error', 'Budget add: Budget already exists for year ' . $year);
-            return $this->respond([
-                'status' => 'error',
-                'message' => 'Budget for year ' . $year . ' already exists'
-            ]);
+            return redirect()->back()
+                ->with('error', 'Budget for year ' . $year . ' already exists')
+                ->withInput();
         }
 
         $data = [
             'year' => $year,
-            'amount' => $amount,
-            'created_at' => date('Y-m-d H:i:s'),
-            'updated_at' => date('Y-m-d H:i:s')
+            'amount' => $amount
         ];
 
         try {
-            log_message('debug', 'Budget add: Attempting to insert - ' . json_encode($data));
             $inserted = $this->budgetModel->insert($data);
             
             if (!$inserted) {
-                log_message('error', 'Budget add: Insert failed - ' . json_encode($this->budgetModel->errors()));
-                return $this->respond([
-                    'status' => 'error',
-                    'message' => 'Failed to insert budget data: ' . implode(', ', $this->budgetModel->errors())
-                ]);
+                return redirect()->back()
+                    ->with('error', 'Failed to insert budget data')
+                    ->withInput();
             }
             
-            // Log successful insertion
-            log_message('info', 'Budget add: Successfully inserted budget for year ' . $year);
-            
-            // Fetch updated budget list
-            $budgets = $this->budgetModel->orderBy('year', 'DESC')->findAll();
-            log_message('debug', 'Budget add: Retrieved updated list - Count: ' . count($budgets));
-            
-            if (empty($budgets)) {
-                $html = '<tr><td colspan="3" class="text-center">No budget records found</td></tr>';
-            } else {
-                $html = '';
-                foreach ($budgets as $budget) {
-                    $html .= '<tr>';
-                    $html .= '<td>' . esc($budget['year']) . '</td>';
-                    $html .= '<td>₱' . number_format($budget['amount'], 2) . '</td>';
-                    $html .= '<td>';
-                    $html .= '<button type="button" class="btn btn-sm btn-info" data-toggle="modal" data-target="#editBudgetModal' . $budget['id'] . '">';
-                    $html .= '<i class="fas fa-edit"></i>';
-                    $html .= '</button> ';
-                    $html .= '<button type="button" class="btn btn-sm btn-danger" data-toggle="modal" data-target="#deleteBudgetModal' . $budget['id'] . '">';
-                    $html .= '<i class="fas fa-trash"></i>';
-                    $html .= '</button>';
-                    $html .= '</td>';
-                    $html .= '</tr>';
-                }
-            }
-
-            return $this->respond([
-                'status' => 'success',
-                'message' => 'Budget added successfully',
-                'data' => $html
-            ]);
+            return redirect()->to('/budget/reports')
+                ->with('success', 'Budget added successfully');
+                
         } catch (\Exception $e) {
             log_message('error', 'Budget add error: ' . $e->getMessage());
-            return $this->respond([
-                'status' => 'error',
-                'message' => 'Failed to add budget: ' . $e->getMessage()
-            ]);
+            return redirect()->back()
+                ->with('error', 'Failed to add budget: ' . $e->getMessage())
+                ->withInput();
         }
-    }
-
-    protected function validateCSRF()
-    {
-        $csrf = csrf_hash();
-        return $csrf === $this->request->getPost('csrf_test_name');
     }
 
     public function expenses()
     {
         $data = [
-            'title' => 'Expenses'
+            'title' => 'Expenses',
+            'active_menu' => 'budget'
         ];
         return view('budget/expenses', $data);
     }
@@ -149,7 +306,9 @@ class Budget extends BaseController
     public function reports()
     {
         $data = [
-            'title' => 'Budget Reports'
+            'title' => 'Budget Reports',
+            'active_menu' => 'budget',
+            'budgets' => $this->budgetModel->orderBy('year', 'DESC')->findAll()
         ];
         return view('budget/budget', $data);
     }

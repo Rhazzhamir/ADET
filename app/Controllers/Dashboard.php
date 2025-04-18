@@ -25,12 +25,29 @@ class Dashboard extends BaseController
             ->limit(10)
             ->find();
 
+        // Get total budget
+        $budgetModel = new \App\Models\BudgetModel();
+        $totalBudget = $budgetModel->selectSum('amount')->first()['amount'] ?? 0;
+
+        // Get total expenses for the current year
+        $expenseModel = new \App\Models\ExpenseModel();
+        $currentYear = date('Y');
+        $totalExpenses = $expenseModel->where('YEAR(date)', $currentYear)
+            ->selectSum('amount')
+            ->first()['amount'] ?? 0;
+
+        // Calculate remaining balance
+        $remainingBalance = $totalBudget - $totalExpenses;
+
         $data = [
             'title' => 'Dashboard',
             'active_menu' => 'dashboard',
             'total_residents' => $totalResidents,
             'total_household_members' => $totalHouseholdMembers,
-            'recent_residents' => $recentResidents
+            'recent_residents' => $recentResidents,
+            'total_budget' => $totalBudget,
+            'total_expenses' => $totalExpenses,
+            'remaining_balance' => $remainingBalance
         ];
         
         return view('dashboard/index', $data);

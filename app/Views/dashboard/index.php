@@ -5,10 +5,10 @@
     <div class="container-fluid">
         <!-- Budget Overview -->
         <div class="row">
-            <div class="col-lg-6">
+            <div class="col-lg-4">
                 <div class="small-box bg-info">
                     <div class="inner">
-                        <h3>₱150,000</h3>
+                        <h3>₱<?= number_format($total_budget, 2) ?></h3>
                         <p>Total Budget</p>
                     </div>
                     <div class="icon">
@@ -19,10 +19,24 @@
                     </a>
                 </div>
             </div>
-            <div class="col-lg-6">
-                <div class="small-box bg-danger">
+            <div class="col-lg-4">
+                <div class="small-box bg-warning">
                     <div class="inner">
-                        <h3>₱15,000</h3>
+                        <h3>₱<?= number_format($total_expenses, 2) ?></h3>
+                        <p>Total Expenses</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-file-invoice"></i>
+                    </div>
+                    <a href="<?= site_url('expenses') ?>" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="small-box <?= $remaining_balance < 0 ? 'bg-danger' : 'bg-success' ?>">
+                    <div class="inner">
+                        <h3>₱<?= number_format($remaining_balance, 2) ?></h3>
                         <p>Remaining Balance</p>
                     </div>
                     <div class="icon">

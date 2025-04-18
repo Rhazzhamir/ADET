@@ -6,31 +6,49 @@ use CodeIgniter\Model;
 
 class BudgetModel extends Model
 {
-    protected $table = 'budgets';
-    protected $primaryKey = 'id';
+    protected $table            = 'budgets';
+    protected $primaryKey       = 'id';
     protected $useAutoIncrement = true;
-    protected $returnType = 'array';
-    protected $allowedFields = ['year', 'amount', 'created_at', 'updated_at'];
-    protected $useTimestamps = true;
-    protected $createdField = 'created_at';
-    protected $updatedField = 'updated_at';
+    protected $returnType       = 'array';
+    protected $useSoftDeletes   = false;
+    protected $protectFields    = true;
+    protected $allowedFields    = ['year', 'amount'];
 
-    protected $validationRules = [
-        'year' => 'required|numeric|min_length[4]|max_length[4]',
+    // Dates
+    protected $useTimestamps = true;
+    protected $dateFormat    = 'datetime';
+    protected $createdField  = 'created_at';
+    protected $updatedField  = 'updated_at';
+
+    // Validation
+    protected $validationRules      = [
+        'year'   => 'required|numeric|exact_length[4]',
         'amount' => 'required|numeric|greater_than[0]',
     ];
+    protected $validationMessages   = [];
+    protected $skipValidation       = false;
+    protected $cleanValidationRules = true;
 
-    protected $validationMessages = [
-        'year' => [
-            'required' => 'Year is required',
-            'numeric' => 'Year must be a number',
-            'min_length' => 'Year must be 4 digits',
-            'max_length' => 'Year must be 4 digits'
-        ],
-        'amount' => [
-            'required' => 'Amount is required',
-            'numeric' => 'Amount must be a number',
-            'greater_than' => 'Amount must be greater than 0'
-        ]
-    ];
+    // Callbacks
+    protected $allowCallbacks = true;
+    protected $beforeInsert   = [];
+    protected $afterInsert    = [];
+    protected $beforeUpdate   = [];
+    protected $afterUpdate    = [];
+    protected $beforeFind     = [];
+    protected $afterFind      = [];
+    protected $beforeDelete   = [];
+    protected $afterDelete    = [];
+
+    public function getBudgetsByYear($year)
+    {
+        return $this->where('year', $year)->findAll();
+    }
+
+    public function getTotalBudgetByYear($year)
+    {
+        return $this->selectSum('amount')
+                    ->where('year', $year)
+                    ->first()['amount'] ?? 0;
+    }
 } 
