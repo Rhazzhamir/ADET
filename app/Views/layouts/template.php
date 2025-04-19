@@ -476,11 +476,6 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a class="nav-link" href="#" role="button">
-                        <i class="fas fa-user"></i> Profile
-                    </a>
-                </li>
-                <li class="nav-item">
                     <a class="nav-link" href="<?= base_url('auth/logout') ?>" role="button">
                         <i class="fas fa-sign-out-alt"></i> Logout
                     </a>
@@ -529,6 +524,31 @@
                             </ul>
                         </li>
 
+                        <!-- Officials -->
+                        <li class="nav-item has-treeview <?= strpos(current_url(), 'officials') !== false ? 'menu-open' : '' ?>">
+                            <a href="#" class="nav-link <?= strpos(current_url(), 'officials') !== false ? 'active' : '' ?>">
+                                <i class="nav-icon fas fa-user-tie"></i>
+                                <p>
+                                    Officials
+                                    <i class="right fas fa-angle-left"></i>
+                                </p>
+                            </a>
+                            <ul class="nav nav-treeview">
+                                <li class="nav-item">
+                                    <a href="<?= base_url('officials') ?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>All Officials</p>
+                                    </a>
+                                </li>
+                                <li class="nav-item">
+                                    <a href="<?= base_url('officials/add') ?>" class="nav-link">
+                                        <i class="far fa-circle nav-icon"></i>
+                                        <p>Add Official</p>
+                                    </a>
+                                </li>
+                            </ul>
+                        </li>
+
                         <!-- Budget -->
                         <li class="nav-item has-treeview <?= strpos(current_url(), 'budget') !== false ? 'menu-open' : '' ?>">
                             <a href="#" class="nav-link <?= strpos(current_url(), 'budget') !== false ? 'active' : '' ?>">
@@ -549,37 +569,6 @@
                                     <a href="<?= base_url('budget/budget') ?>" class="nav-link">
                                         <i class="far fa-circle nav-icon"></i>
                                         <p>Budget</p>
-                                    </a>
-                                </li>
-                            </ul>
-                        </li>
-
-                        <!-- Officials -->
-                        <li class="nav-item has-treeview <?= strpos(current_url(), 'officials') !== false ? 'menu-open' : '' ?>">
-                            <a href="#" class="nav-link <?= strpos(current_url(), 'officials') !== false ? 'active' : '' ?>">
-                                <i class="nav-icon fas fa-user-tie"></i>
-                                <p>
-                                    Officials
-                                    <i class="right fas fa-angle-left"></i>
-                                </p>
-                            </a>
-                            <ul class="nav nav-treeview">
-                                <li class="nav-item">
-                                    <a href="<?= base_url('officials') ?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>All Officials</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('officials/add') ?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Add New Official</p>
-                                    </a>
-                                </li>
-                                <li class="nav-item">
-                                    <a href="<?= base_url('officials/positions') ?>" class="nav-link">
-                                        <i class="far fa-circle nav-icon"></i>
-                                        <p>Positions</p>
                                     </a>
                                 </li>
                             </ul>

@@ -34,9 +34,9 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="small-box <?= $remaining_balance < 0 ? 'bg-danger' : 'bg-success' ?>">
+                <div class="small-box <?= isset($remaining_balance) && $remaining_balance < 0 ? 'bg-danger' : 'bg-success' ?>">
                     <div class="inner">
-                        <h3>₱<?= number_format($remaining_balance, 2) ?></h3>
+                        <h3>₱<?= isset($remaining_balance) ? number_format($remaining_balance, 2) : '0.00' ?></h3>
                         <p>Remaining Balance</p>
                     </div>
                     <div class="icon">
@@ -80,14 +80,14 @@
                                 <div class="info-box bg-light">
                                     <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>
                                     <div class="info-box-content">
-                                        <span class="info-box-text">Total Households Member</span>
-                                        <span class="info-box-number"><?= $total_household_members ?></span>
+                                        <span class="info-box-text">Total Households</span>
+                                        <span class="info-box-number"><?= $total_households ?></span>
                                     </div>
                                 </div>
                             </div>
                         </div>
                         <div class="table-responsive">
-                            <table class="table table-bordered" data-table="false">
+                            <table class="table table-bordered">
                                 <thead>
                                     <tr>
                                         <th>Recent Registrations</th>
@@ -114,71 +114,7 @@
                 </div>
             </div>
 
-            <!-- Officials Section -->
-            <div class="col-md-6">
-                <div class="card">
-                    <div class="card-header">
-                        <h3 class="card-title">
-                            <i class="fas fa-user-tie mr-1"></i>
-                            Barangay Officials
-                        </h3>
-                        <div class="card-tools">
-                            <a href="<?= site_url('officials') ?>" class="btn btn-tool">
-                                <i class="fas fa-list"></i> View All
-                            </a>
-                        </div>
-                    </div>
-                    <div class="card-body">
-                        <div class="row">
-                            <div class="col-6">
-                                <div class="info-box bg-light">
-                                    <span class="info-box-icon bg-primary"><i class="fas fa-user-tie"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">Total Officials</span>
-                                        <span class="info-box-number">12</span>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="col-6">
-                                <div class="info-box bg-light">
-                                    <span class="info-box-icon bg-warning"><i class="fas fa-clock"></i></span>
-                                    <div class="info-box-content">
-                                        <span class="info-box-text">Current Term</span>
-                                        <span class="info-box-number">2023-2025</span>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="table-responsive">
-                            <table class="table table-bordered">
-                                <thead>
-                                    <tr>
-                                        <th>Position</th>
-                                        <th>Name</th>
-                                        <th>Contact</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td>Barangay Captain</td>
-                                        <td>John Smith</td>
-                                        <td>09123456789</td>
-                                    </tr>
-                                    <tr>
-                                        <td>Secretary</td>
-                                        <td>Jane Doe</td>
-                                        <td>09234567890</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-
-        <!-- Recent Activities -->
-        <div class="row">
+            <!-- Recent Activities -->
             <div class="col-12">
                 <div class="card">
                     <div class="card-header">

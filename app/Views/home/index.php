@@ -365,16 +365,10 @@
                         <a class="nav-link active" href="#">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#officials">Officials</a>
+                        <a class="nav-link" href="#residents">Residents</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="#Main_Features">Main Features</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#Terms_&_Privacy">Terms & Privacy</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="#map">Map</a>
+                        <a class="nav-link" href="#budget">Budget</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="#contact">Contact</a>
@@ -401,126 +395,6 @@
             <div class="mt-4">
                 <a href="<?= base_url('auth/resident/login') ?>" class="btn btn-primary btn-lg me-2">Login</a>
                 <a href="<?= base_url('auth/resident/register') ?>" class="btn btn-outline-light btn-lg">Register</a>
-            </div>
-        </div>
-    </section>
-
-    <hr class="section-divider">
-
-    <!-- Officials Section -->
-    <section class="py-5 bg-light" id="officials">
-        <div class="container">
-            <h2 class="text-center mb-5">Barangay Officials</h2>
-            <div class="row">
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Captain">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Captain</h5>
-                            <p class="card-text">John Doe</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Kagawad 1 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Kagawad">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Kagawad</h5>
-                            <p class="card-text">Jane Smith</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Kagawad 2 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Kagawad">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Kagawad</h5>
-                            <p class="card-text">Alex Johnson</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Kagawad 3 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Kagawad">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Kagawad</h5>
-                            <p class="card-text">Maria Garcia</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Kagawad 4 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Kagawad">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Kagawad</h5>
-                            <p class="card-text">James Brown</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Kagawad 5 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Kagawad">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Kagawad</h5>
-                            <p class="card-text">Linda White</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Kagawad 6 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Kagawad">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Kagawad</h5>
-                            <p class="card-text">Robert Green</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Kagawad 7 -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Kagawad">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Kagawad</h5>
-                            <p class="card-text">Patricia Blue</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Secretary -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Secretary">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Secretary</h5>
-                            <p class="card-text">Michael Johnson</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- Treasurer -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="Treasurer">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">Treasurer</h5>
-                            <p class="card-text">Emily Davis</p>
-                        </div>
-                    </div>
-                </div>
-                <!-- SK Chairman -->
-                <div class="col-md-4 mb-4">
-                    <div class="card">
-                        <img src="assets/img/logo.png" class="card-img-top" alt="SK Chairman">
-                        <div class="card-body text-center">
-                            <h5 class="card-title">SK Chairman</h5>
-                            <p class="card-text">Chris Brown</p>
-                        </div>
-                    </div>
-                </div>
             </div>
         </div>
     </section>

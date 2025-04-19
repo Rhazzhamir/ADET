@@ -6,50 +6,41 @@ use CodeIgniter\Controller;
 use App\Models\HouseholdModel;
 use App\Models\HouseholdMemberModel;
 use App\Models\ResidentModel;
+use App\Models\BudgetModel;
+use App\Models\ExpenseModel;
 
 class Dashboard extends BaseController
 {
+    protected $residentModel;
+    protected $householdModel;
+    protected $budgetModel;
+    protected $expenseModel;
+
+    public function __construct()
+    {
+        $this->residentModel = new ResidentModel();
+        $this->householdModel = new HouseholdModel();
+        $this->budgetModel = new BudgetModel();
+        $this->expenseModel = new ExpenseModel();
+    }
+
     public function index()
     {
-        // Get resident count
-        $residentModel = new ResidentModel();
-        $totalResidents = $residentModel->countAll();
-
-        // Get total household members count
-        $householdMemberModel = new HouseholdMemberModel();
-        $totalHouseholdMembers = $householdMemberModel->countAll();
-
-        // Get recent registrations (latest 10)
-        $recentResidents = $residentModel->select('full_name, created_at')
-            ->orderBy('created_at', 'DESC')
-            ->limit(10)
-            ->find();
-
-        // Get total budget
-        $budgetModel = new \App\Models\BudgetModel();
-        $totalBudget = $budgetModel->selectSum('amount')->first()['amount'] ?? 0;
-
-        // Get total expenses for the current year
-        $expenseModel = new \App\Models\ExpenseModel();
-        $currentYear = date('Y');
-        $totalExpenses = $expenseModel->where('YEAR(date)', $currentYear)
-            ->selectSum('amount')
-            ->first()['amount'] ?? 0;
-
-        // Calculate remaining balance
-        $remainingBalance = $totalBudget - $totalExpenses;
-
         $data = [
             'title' => 'Dashboard',
-            'active_menu' => 'dashboard',
-            'total_residents' => $totalResidents,
-            'total_household_members' => $totalHouseholdMembers,
-            'recent_residents' => $recentResidents,
-            'total_budget' => $totalBudget,
-            'total_expenses' => $totalExpenses,
-            'remaining_balance' => $remainingBalance
+            'total_residents' => $this->residentModel->countAll(),
+            'total_households' => $this->householdModel->countAll(),
+            'total_budget' => $this->budgetModel->selectSum('amount')->get()->getRow()->amount ?? 0,
+            'total_expenses' => $this->expenseModel->selectSum('amount')->get()->getRow()->amount ?? 0,
+            'recent_residents' => $this->residentModel->orderBy('created_at', 'DESC')->limit(5)->find(),
+            'recent_households' => $this->householdModel->orderBy('created_at', 'DESC')->limit(5)->find(),
+            'recent_budgets' => $this->budgetModel->orderBy('created_at', 'DESC')->limit(5)->find(),
+            'recent_expenses' => $this->expenseModel->orderBy('created_at', 'DESC')->limit(5)->find()
         ];
-        
+
+        // Calculate remaining balance
+        $data['remaining_balance'] = $data['total_budget'] - $data['total_expenses'];
+
         return view('dashboard/index', $data);
     }
 

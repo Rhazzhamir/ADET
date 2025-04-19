@@ -55,15 +55,6 @@ $routes->group('budget', function($routes) {
     $routes->get('yearly-total/(:num)', 'Budget::getYearlyTotal/$1');
 });
 
-// Officials Routes
-$routes->get('officials', 'Officials::index');
-$routes->get('officials/add', 'Officials::add');
-$routes->post('officials/add', 'Officials::add');
-$routes->get('officials/edit/(:num)', 'Officials::edit/$1');
-$routes->post('officials/edit/(:num)', 'Officials::edit/$1');
-$routes->post('officials/delete/(:num)', 'Officials::delete/$1');
-$routes->get('officials/positions', 'Officials::positions');
-
 // Legal Routes
 $routes->get('legal/privacy', 'Legal::privacy');
 $routes->get('legal/terms', 'Legal::terms');
@@ -96,6 +87,17 @@ $routes->get('expenses', 'Expenses::index');
 $routes->post('expenses/add', 'Expenses::add');
 $routes->post('expenses/update/(:num)', 'Expenses::update/$1');
 $routes->post('expenses/delete/(:num)', 'Expenses::delete/$1');
+
+// Officials Routes
+$routes->group('officials', function($routes) {
+    $routes->get('/', 'Officials::index');
+    $routes->get('add', 'Officials::add');
+    $routes->post('store', 'Officials::store');
+    $routes->get('edit/(:num)', 'Officials::edit/$1');
+    $routes->post('update/(:num)', 'Officials::update/$1');
+    $routes->get('view/(:num)', 'Officials::view/$1');
+    $routes->delete('delete/(:num)', 'Officials::delete/$1');
+});
 
 /*
  * --------------------------------------------------------------------

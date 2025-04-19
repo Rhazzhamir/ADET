@@ -79,29 +79,29 @@
                 <div class="mt-4">
                     <div class="row">
                         <div class="col-md-4">
-                            <div class="info-box bg-gradient-success">
-                                <span class="info-box-icon"><i class="fas fa-money-bill-wave"></i></span>
+                            <div class="info-box">
+                                <span class="info-box-icon bg-info"><i class="fas fa-users"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Available Budget</span>
-                                    <span class="info-box-number">₱400,000</span>
+                                    <span class="info-box-text">Total Residents</span>
+                                    <span class="info-box-number"><?= $total_residents ?></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="info-box bg-gradient-warning">
-                                <span class="info-box-icon"><i class="fas fa-exclamation-triangle"></i></span>
+                            <div class="info-box">
+                                <span class="info-box-icon bg-success"><i class="fas fa-home"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Pending Expenses</span>
-                                    <span class="info-box-number">₱50,000</span>
+                                    <span class="info-box-text">Total Households</span>
+                                    <span class="info-box-number"><?= $total_households ?></span>
                                 </div>
                             </div>
                         </div>
                         <div class="col-md-4">
-                            <div class="info-box bg-gradient-info">
-                                <span class="info-box-icon"><i class="fas fa-percentage"></i></span>
+                            <div class="info-box">
+                                <span class="info-box-icon bg-warning"><i class="fas fa-money-bill-wave"></i></span>
                                 <div class="info-box-content">
-                                    <span class="info-box-text">Budget Utilization</span>
-                                    <span class="info-box-number">80%</span>
+                                    <span class="info-box-text">Total Budget</span>
+                                    <span class="info-box-number">₱<?= number_format($total_budget, 2) ?></span>
                                 </div>
                             </div>
                         </div>
