@@ -10,9 +10,13 @@ Specific Objective:
 
 System Modules and Features
 Module	Features
+
 User Management	Role-based access control, Profile management, User authentication, Profile management, Registration, User login
-Budget Management	Income and expense categorization, Audit log for financial transactions, Budget allocation and tracking,
+
+Budget Management	Income and expense categorization, Audit log for financial transactions, Budget allocation and tracking
+
 Member & Officials Directory	List of barangay officials with positions and contact details, List of barangay staff and community leaders, Term durations and election history tracking
+
 Resident Records Management	Resident registration and profile management,
 
 
