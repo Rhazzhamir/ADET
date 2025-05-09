@@ -69,6 +69,8 @@ $routes->post('dashboard/change-password', 'Dashboard::changePassword');
 $routes->post('dashboard/savePersonalInfo', 'Dashboard::savePersonalInfo');
 $routes->post('dashboard/saveResidentRegistration', 'Dashboard::saveResidentRegistration');
 $routes->post('dashboard/deleteMember/(:num)', 'Dashboard::deleteHouseholdMember/$1');
+$routes->get('dashboard/certificate-request', 'Dashboard::certificateRequest');
+$routes->post('dashboard/submit-certificate-request', 'Dashboard::submitCertificateRequest');
 
 // Auth Routes
 $routes->get('auth/resident/login', 'Auth::residentLogin');
@@ -98,6 +100,9 @@ $routes->group('officials', function($routes) {
     $routes->get('view/(:num)', 'Officials::view/$1');
     $routes->delete('delete/(:num)', 'Officials::delete/$1');
 });
+
+// Certificate Routes
+$routes->get('certificate', 'Certificate::index');
 
 /*
  * --------------------------------------------------------------------

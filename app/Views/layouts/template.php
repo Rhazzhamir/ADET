@@ -598,6 +598,13 @@
                                 </li>
                             </ul>
                         </li>
+                        <!-- Certificate -->
+                        <li class="nav-item">
+                            <a href="<?= base_url('certificate') ?>" class="nav-link <?= strpos(current_url(), 'certificate') !== false ? 'active' : '' ?>">
+                                <i class="nav-icon fas fa-certificate"></i>
+                                <p>Certificate</p>
+                            </a>
+                        </li>
                     </ul>
                 </nav>
                 <!-- /.sidebar-menu -->
@@ -656,7 +663,7 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-                                <li class="breadcrumb-item"><a href="<?= base_url() ?>">Home</a></li>
+                                <li class="breadcrumb-item"><a href="<?= base_url('/dashboard') ?>">Home</a></li>
                                 <li class="breadcrumb-item active"><?= $title ?? 'Dashboard' ?></li>
                             </ol>
                         </div>

@@ -8,6 +8,7 @@ use App\Models\HouseholdMemberModel;
 use App\Models\ResidentModel;
 use App\Models\BudgetModel;
 use App\Models\ExpenseModel;
+use App\Models\CertificateModel;
 
 class Dashboard extends BaseController
 {
@@ -15,6 +16,7 @@ class Dashboard extends BaseController
     protected $householdModel;
     protected $budgetModel;
     protected $expenseModel;
+    protected $certificateModel;
 
     public function __construct()
     {
@@ -22,6 +24,7 @@ class Dashboard extends BaseController
         $this->householdModel = new HouseholdModel();
         $this->budgetModel = new BudgetModel();
         $this->expenseModel = new ExpenseModel();
+        $this->certificateModel = new CertificateModel();
     }
 
     public function index()
@@ -460,5 +463,82 @@ class Dashboard extends BaseController
             log_message('error', 'Exception deleting member ID ' . $memberId . ': ' . $e->getMessage());
             return $this->response->setJSON(['success' => false, 'message' => 'An error occurred while deleting the member.']);
         }
+    }
+
+    public function certificateRequest()
+    {
+        // Check if user is logged in
+        if (!session()->get('is_logged_in') || session()->get('user_type') !== 'resident') {
+            return redirect()->to(base_url('auth/resident/login'));
+        }
+
+        // Get resident's certificate requests
+        $residentId = session()->get('resident_id');
+        $requests = $this->certificateModel->where('resident_id', $residentId)
+                                        ->orderBy('created_at', 'DESC')
+                                        ->findAll();
+
+        $data = [
+            'title' => 'Certificate Request',
+            'active_menu' => 'certificate-request',
+            'requests' => $requests
+        ];
+
+        return view('dashboard/certificate_request', $data);
+    }
+
+    public function submitCertificateRequest()
+    {
+        // Check if user is logged in
+        if (!session()->get('is_logged_in') || session()->get('user_type') !== 'resident') {
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Please login to continue'
+            ]);
+        }
+
+        // Log the POST data
+        log_message('debug', 'Certificate Request POST data: ' . json_encode($this->request->getPost()));
+
+        // Validate input
+        $rules = [
+            'certificate_type' => 'required',
+            'purpose' => 'required|min_length[10]',
+            'requested_date' => 'required|valid_date',
+            'number_of_copies' => 'required|integer|greater_than[0]|less_than[6]'
+        ];
+
+        if (!$this->validate($rules)) {
+            // Log validation errors
+            log_message('debug', 'Certificate Request validation errors: ' . json_encode($this->validator->getErrors()));
+            
+            return $this->response->setJSON([
+                'success' => false,
+                'message' => 'Validation failed',
+                'errors' => $this->validator->getErrors()
+            ]);
+        }
+
+        // Save request
+        $data = [
+            'resident_id' => session()->get('resident_id'),
+            'certificate_type' => $this->request->getPost('certificate_type'),
+            'purpose' => $this->request->getPost('purpose'),
+            'requested_date' => $this->request->getPost('requested_date'),
+            'number_of_copies' => $this->request->getPost('number_of_copies'),
+            'status' => 'pending'
+        ];
+
+        if ($this->certificateModel->insert($data)) {
+            return $this->response->setJSON([
+                'success' => true,
+                'message' => 'Certificate request submitted successfully. Wait for approval from the barangay official.'
+            ]);
+        }
+
+        return $this->response->setJSON([
+            'success' => false,
+            'message' => 'Failed to submit certificate request'
+        ]);
     }
 } 

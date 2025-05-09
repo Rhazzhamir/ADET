@@ -639,6 +639,12 @@
                     <span>My Profile</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('dashboard/certificate-request') ?>">
+                    <i class="fas fa-user"></i>
+                    <span>Certificate Request</span>
+                </a>
+            </li>
             <li class="nav-item mt-4">
                 <a class="nav-link text-danger" href="<?= base_url('auth/logout') ?>">
                     <i class="fas fa-sign-out-alt"></i>
