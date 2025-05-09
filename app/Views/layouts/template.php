@@ -663,11 +663,7 @@
                         </div>
                         <div class="col-sm-6">
                             <ol class="breadcrumb float-sm-right">
-<<<<<<< HEAD
                                 <li class="breadcrumb-item"><a href="<?= base_url('/dashboard') ?>">Home</a></li>
-=======
-                                <li class="breadcrumb-item"><a href="<?= base_url('dashboard') ?>">Home</a></li>
->>>>>>> f37f0a49cde5cca6ea4d912aac4dba91e659f56c
                                 <li class="breadcrumb-item active"><?= $title ?? 'Dashboard' ?></li>
                             </ol>
                         </div>
