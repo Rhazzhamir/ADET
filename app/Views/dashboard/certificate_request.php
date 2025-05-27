@@ -277,19 +277,107 @@
             transform: scale(1.1);
         }
 
-        /* Responsive Design */
-        @media (max-width: 768px) {
-            .sidebar {
-                width: 70px;
+        /* Enhanced Spacing and Padding */
+        .form-section, .dashboard-card, .main-content {
+            margin-bottom: 32px !important;
+            padding-bottom: 24px !important;
+        }
+        .form-label, .form-section-title {
+            margin-bottom: 8px !important;
+        }
+        .form-control, .certificate-type-card {
+            margin-bottom: 16px !important;
+        }
+        /* Prominent Submit Button */
+        .btn-primary.btn-lg {
+            font-size: 1.2rem;
+            padding: 14px 36px;
+            border-radius: 8px;
+            box-shadow: 0 2px 8px rgba(13,110,253,0.15);
+            transition: background 0.2s, transform 0.2s;
+        }
+        .btn-primary.btn-lg:hover {
+            background: #0b5ed7;
+            transform: translateY(-2px) scale(1.03);
+        }
+        /* Certificate Card Highlight */
+        .certificate-type-card.selected {
+            border: 3px solid var(--primary-color);
+            background-color: rgba(13, 110, 253, 0.10);
+            position: relative;
+        }
+        .certificate-type-card.selected::after {
+            content: '\2714';
+            position: absolute;
+            top: 12px;
+            right: 18px;
+            font-size: 1.5rem;
+            color: var(--primary-color);
+            background: #fff;
+            border-radius: 50%;
+            padding: 2px 6px;
+            box-shadow: 0 1px 4px rgba(0,0,0,0.08);
+        }
+        /* Tooltips */
+        .help-tooltip {
+            margin-left: 6px;
+            color: var(--info-color);
+            cursor: pointer;
+        }
+        /* Zebra Striping for Table */
+        .request-history .table tbody tr:nth-child(odd) {
+            background-color: var(--form-bg);
+        }
+        .request-history .table tbody tr:hover {
+            background-color: #e9f2ff;
+        }
+        /* Action Icons */
+        .table .btn-info, .table .btn-success {
+            margin-right: 4px;
+        }
+        /* Toast Notification */
+        .toast {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            min-width: 250px;
+            z-index: 2000;
+        }
+        /* Confirmation Modal */
+        .modal-confirm {
+            color: #636363;
+            width: 400px;
+        }
+        .modal-confirm .modal-content {
+            padding: 20px;
+            border-radius: 8px;
+            border: none;
+        }
+        .modal-confirm .modal-header {
+            border-bottom: none;
+            position: relative;
+        }
+        .modal-confirm h4 {
+            text-align: center;
+            font-size: 1.5rem;
+        }
+        .modal-confirm .close {
+            position: absolute;
+            top: -5px;
+            right: -2px;
+        }
+        /* Accessibility: Focus Styles */
+        .form-control:focus, .btn:focus, .certificate-type-card:focus {
+            outline: 2px solid var(--primary-color);
+            outline-offset: 2px;
+        }
+        /* Responsive Tweaks */
+        @media (max-width: 576px) {
+            .dashboard-card, .form-section {
+                padding: 10px !important;
             }
-            .sidebar .nav-link span {
-                display: none;
-            }
-            .main-content {
-                margin-left: 70px;
-            }
-            .certificate-types {
-                grid-template-columns: 1fr;
+            .btn-primary.btn-lg {
+                width: 100%;
             }
         }
     </style>
@@ -318,6 +406,12 @@
                 <a class="nav-link active" href="<?= base_url('dashboard/certificate-request') ?>">
                     <i class="fas fa-file-alt"></i>
                     <span>Certificate Request</span>
+                </a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('dashboard/notification') ?>">
+                    <i class="fas fa-bell"></i>
+                    <span>Notification</span>
                 </a>
             </li>
             <li class="nav-item mt-4">
@@ -395,16 +489,22 @@
                         </h5>
                         <div class="row">
                             <div class="col-md-12 mb-3">
-                                <label for="purpose" class="form-label">Purpose of Request</label>
+                                <label for="purpose" class="form-label">Purpose of Request
+                                    <span class="help-tooltip" tabindex="0" data-bs-toggle="tooltip" title="State why you need this certificate."><i class="fas fa-question-circle"></i></span>
+                                </label>
                                 <textarea class="form-control" id="purpose" name="purpose" rows="3" required 
                                           placeholder="Please specify the purpose of your certificate request"></textarea>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="requested_date" class="form-label">Preferred Pick-up Date</label>
+                                <label for="requested_date" class="form-label">Preferred Pick-up Date
+                                    <span class="help-tooltip" tabindex="0" data-bs-toggle="tooltip" title="Select when you want to pick up your certificate."><i class="fas fa-question-circle"></i></span>
+                                </label>
                                 <input type="date" class="form-control" id="requested_date" name="requested_date" required>
                             </div>
                             <div class="col-md-6 mb-3">
-                                <label for="number_of_copies" class="form-label">Number of Copies</label>
+                                <label for="number_of_copies" class="form-label">Number of Copies
+                                    <span class="help-tooltip" tabindex="0" data-bs-toggle="tooltip" title="You can request up to 5 copies."><i class="fas fa-question-circle"></i></span>
+                                </label>
                                 <input type="number" class="form-control" id="number_of_copies" name="number_of_copies" 
                                        min="1" max="5" value="1" required>
                             </div>
@@ -437,7 +537,6 @@
                                 <th>Certificate Type</th>
                                 <th>Request Date</th>
                                 <th>Status</th>
-                                <th>Actions</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -452,21 +551,11 @@
                                                 <?= ucfirst($request['status']) ?>
                                             </span>
                                         </td>
-                                        <td>
-                                            <button class="btn btn-sm btn-info" onclick="viewRequestDetails('<?= $request['id'] ?>')">
-                                                <i class="fas fa-eye"></i>
-                                            </button>
-                                            <?php if ($request['status'] === 'approved') : ?>
-                                                <button class="btn btn-sm btn-success" onclick="downloadCertificate('<?= $request['id'] ?>')">
-                                                    <i class="fas fa-download"></i>
-                                                </button>
-                                            <?php endif; ?>
-                                        </td>
                                     </tr>
                                 <?php endforeach; ?>
                             <?php else : ?>
                                 <tr>
-                                    <td colspan="5" class="text-center">No certificate requests found.</td>
+                                    <td colspan="4" class="text-center">No certificate requests found.</td>
                                 </tr>
                             <?php endif; ?>
                         </tbody>
@@ -474,6 +563,32 @@
                 </div>
             </div>
         </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast align-items-center text-bg-primary border-0" id="feedbackToast" role="alert" aria-live="assertive" aria-atomic="true" style="display:none;">
+        <div class="d-flex">
+            <div class="toast-body" id="toastMessage"></div>
+            <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+        </div>
+    </div>
+    <!-- Confirmation Modal -->
+    <div class="modal fade" id="confirmModal" tabindex="-1" aria-labelledby="confirmModalLabel" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content modal-confirm">
+          <div class="modal-header">
+            <h4 class="modal-title w-100" id="confirmModalLabel">Confirm Submission</h4>
+            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+          </div>
+          <div class="modal-body text-center">
+            Are you sure you want to submit this certificate request?
+          </div>
+          <div class="modal-footer justify-content-center">
+            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+            <button type="button" class="btn btn-primary" id="confirmSubmitBtn">Yes, Submit</button>
+          </div>
+        </div>
+      </div>
     </div>
 
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
@@ -525,32 +640,44 @@
                 });
             });
 
-            // Form submission
+            // Enable tooltips
+            var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'));
+            tooltipTriggerList.forEach(function (tooltipTriggerEl) {
+                new bootstrap.Tooltip(tooltipTriggerEl);
+            });
+
+            // Form submission with confirmation modal
             const form = document.getElementById('certificateRequestForm');
+            let pendingSubmit = false;
             form.addEventListener('submit', function(e) {
                 e.preventDefault();
-                
                 if (!selectedTypeInput.value) {
-                    alert('Please select a certificate type');
+                    showToast('Please select a certificate type.', 'danger');
                     return;
                 }
-
+                // Show confirmation modal
+                pendingSubmit = true;
+                var confirmModal = new bootstrap.Modal(document.getElementById('confirmModal'));
+                confirmModal.show();
+            });
+            // Confirm modal submit
+            document.getElementById('confirmSubmitBtn').addEventListener('click', function() {
+                if (!pendingSubmit) return;
+                pendingSubmit = false;
+                var confirmModal = bootstrap.Modal.getInstance(document.getElementById('confirmModal'));
+                confirmModal.hide();
+                actuallySubmitForm();
+            });
+            function actuallySubmitForm() {
                 // Get form data
-                const formData = new FormData(this);
-                
-                // Log form data for debugging
-                for (let pair of formData.entries()) {
-                    console.log(pair[0] + ': ' + pair[1]);
-                }
-                
+                const formData = new FormData(form);
                 // Show loading state
-                const submitButton = this.querySelector('button[type="submit"]');
+                const submitButton = form.querySelector('button[type="submit"]');
                 const originalButtonText = submitButton.innerHTML;
                 submitButton.disabled = true;
                 submitButton.innerHTML = '<i class="fas fa-spinner fa-spin me-2"></i>Submitting...';
-                
                 // Send AJAX request
-                fetch(this.action, {
+                fetch(form.action, {
                     method: 'POST',
                     body: formData,
                     headers: {
@@ -560,45 +687,33 @@
                 .then(response => response.json())
                 .then(data => {
                     if (data.success) {
-                        // Show success message
-                        const alertDiv = document.createElement('div');
-                        alertDiv.className = 'alert alert-success alert-dismissible fade show';
-                        alertDiv.innerHTML = `
-                            <i class="fas fa-check-circle me-2"></i>${data.message}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        `;
-                        this.insertBefore(alertDiv, this.firstChild);
-                        
+                        showToast(data.message, 'success');
                         // Reset form
-                        this.reset();
+                        form.reset();
                         certificateCards.forEach(card => card.classList.remove('selected'));
                         selectedTypeInput.value = '';
-                        
-                        // Reload page after 2 seconds to show updated request history
-                        setTimeout(() => {
-                            window.location.reload();
-                        }, 2000);
+                        setTimeout(() => { window.location.reload(); }, 2000);
                     } else {
-                        // Show error message
-                        const alertDiv = document.createElement('div');
-                        alertDiv.className = 'alert alert-danger alert-dismissible fade show';
-                        alertDiv.innerHTML = `
-                            <i class="fas fa-exclamation-circle me-2"></i>${data.message}
-                            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
-                        `;
-                        this.insertBefore(alertDiv, this.firstChild);
+                        showToast(data.message, 'danger');
                     }
                 })
                 .catch(error => {
-                    console.error('Error:', error);
-                    alert('An error occurred while submitting your request. Please try again.');
+                    showToast('An error occurred while submitting your request. Please try again.', 'danger');
                 })
                 .finally(() => {
-                    // Reset button state
                     submitButton.disabled = false;
                     submitButton.innerHTML = originalButtonText;
                 });
-            });
+            }
+            // Toast notification function
+            function showToast(message, type) {
+                const toast = document.getElementById('feedbackToast');
+                const toastMessage = document.getElementById('toastMessage');
+                toastMessage.textContent = message;
+                toast.className = 'toast align-items-center text-bg-' + (type === 'success' ? 'success' : (type === 'danger' ? 'danger' : 'primary')) + ' border-0';
+                toast.style.display = 'block';
+                setTimeout(() => { toast.style.display = 'none'; }, 3000);
+            }
         });
 
         // View request details
@@ -611,6 +726,31 @@
         function downloadCertificate(requestId) {
             // Implement download functionality
             console.log('Downloading certificate for request:', requestId);
+        }
+
+        // Cancel certificate request
+        function cancelRequest(requestId) {
+            if (!confirm('Are you sure you want to cancel this request?')) return;
+            fetch('<?= base_url('dashboard/cancel-request') ?>', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-Requested-With': 'XMLHttpRequest',
+                },
+                body: JSON.stringify({ id: requestId })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    showToast(data.message, 'success');
+                    setTimeout(() => { window.location.reload(); }, 1500);
+                } else {
+                    showToast(data.message, 'danger');
+                }
+            })
+            .catch(() => {
+                showToast('An error occurred while cancelling your request.', 'danger');
+            });
         }
     </script>
 </body>

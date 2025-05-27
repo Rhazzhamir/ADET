@@ -394,6 +394,12 @@
                     <span>Certificate Request</span>
                 </a>
             </li>
+            <li class="nav-item">
+                <a class="nav-link" href="<?= base_url('dashboard/notification') ?>">
+                    <i class="fas fa-bell"></i>
+                    <span>Notification</span>
+                </a>
+            </li>
             <li class="nav-item mt-4">
                 <a class="nav-link text-danger" href="<?= base_url('auth/logout') ?>">
                     <i class="fas fa-sign-out-alt"></i>

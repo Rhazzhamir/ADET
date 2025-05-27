@@ -541,4 +541,58 @@ class Dashboard extends BaseController
             'message' => 'Failed to submit certificate request'
         ]);
     }
+
+    public function notification()
+    {
+        // Check if user is logged in
+        if (!session()->get('is_logged_in') || session()->get('user_type') !== 'resident') {
+            return redirect()->to(base_url('auth/resident/login'));
+        }
+
+        // Get resident's notifications
+        $residentId = session()->get('resident_id');
+        
+        // For now, we'll just show certificate request notifications
+        $notifications = $this->certificateModel->where('resident_id', $residentId)
+                                              ->orderBy('created_at', 'DESC')
+                                              ->findAll();
+
+        $data = [
+            'title' => 'Notifications',
+            'active_menu' => 'notification',
+            'notifications' => $notifications
+        ];
+
+        return view('dashboard/notification', $data);
+    }
+
+    public function cancelCertificateRequest()
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => 'Invalid request type.']);
+        }
+
+        if (!session()->get('is_logged_in') || session()->get('user_type') !== 'resident') {
+            return $this->response->setJSON(['success' => false, 'message' => 'Authentication required.']);
+        }
+
+        $input = $this->request->getJSON(true);
+        $requestId = $input['id'] ?? null;
+        $residentId = session()->get('resident_id');
+
+        if (!$requestId) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Invalid request ID.']);
+        }
+
+        $request = $this->certificateModel->find($requestId);
+        if (!$request || $request['resident_id'] != $residentId) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Request not found or unauthorized.']);
+        }
+        if ($request['status'] !== 'pending') {
+            return $this->response->setJSON(['success' => false, 'message' => 'Only pending requests can be cancelled.']);
+        }
+
+        $this->certificateModel->update($requestId, ['status' => 'cancelled']);
+        return $this->response->setJSON(['success' => true, 'message' => 'Request cancelled successfully.']);
+    }
 } 
