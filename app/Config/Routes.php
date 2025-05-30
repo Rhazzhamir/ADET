@@ -106,6 +106,7 @@ $routes->group('officials', function($routes) {
 $routes->get('certificate', 'Certificate::index');
 $routes->get('certificate/view/(:num)', 'Certificate::view/$1');
 $routes->post('certificate/approve/(:num)', 'Certificate::approve/$1');
+$routes->post('certificate/reject/(:num)', 'Certificate::reject/$1');
 
 /*
  * --------------------------------------------------------------------

@@ -32,7 +32,7 @@
                         <a href="#" class="btn btn-info btn-sm" title="View" onclick="viewCertificateRequest(<?= $request['id'] ?>); return false;"><i class="fas fa-eye"></i></a>
                         <?php if ($request['status'] === 'pending'): ?>
                             <a href="#" class="btn btn-success btn-sm" title="Approve" onclick="approveCertificateRequest(<?= $request['id'] ?>); return false;"><i class="fas fa-check"></i></a>
-                            <a href="#" class="btn btn-danger btn-sm" title="Reject"><i class="fas fa-times"></i></a>
+                            <a href="#" class="btn btn-danger btn-sm" title="Reject" onclick="rejectCertificateRequest(<?= $request['id'] ?>); return false;"><i class="fas fa-times"></i></a>
                         <?php endif; ?>
                     </td>
                 </tr>
@@ -123,6 +123,26 @@ function approveCertificateRequest(requestId) {
     })
     .catch(() => {
         alert('Failed to approve the request.');
+    });
+}
+
+function rejectCertificateRequest(requestId) {
+    if (!confirm('Are you sure you want to reject this certificate request?')) return;
+    fetch('<?= base_url('certificate/reject/') ?>' + requestId, {
+        method: 'POST',
+        headers: { 'X-Requested-With': 'XMLHttpRequest' }
+    })
+    .then(response => response.json())
+    .then(data => {
+        if (data.success) {
+            alert(data.message);
+            window.location.reload();
+        } else {
+            alert(data.message);
+        }
+    })
+    .catch(() => {
+        alert('Failed to reject the request.');
     });
 }
 

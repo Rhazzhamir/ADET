@@ -61,4 +61,21 @@ class Certificate extends BaseController
         $certificateModel->update($id, ['status' => 'approved']);
         return $this->response->setJSON(['success' => true, 'message' => 'Certificate request approved successfully.']);
     }
+
+    public function reject($id)
+    {
+        if (!$this->request->isAJAX()) {
+            return $this->response->setStatusCode(403)->setJSON(['success' => false, 'message' => 'Invalid request type.']);
+        }
+        $certificateModel = new CertificateModel();
+        $request = $certificateModel->find($id);
+        if (!$request) {
+            return $this->response->setJSON(['success' => false, 'message' => 'Request not found.']);
+        }
+        if ($request['status'] !== 'pending') {
+            return $this->response->setJSON(['success' => false, 'message' => 'Only pending requests can be rejected.']);
+        }
+        $certificateModel->update($id, ['status' => 'rejected']);
+        return $this->response->setJSON(['success' => true, 'message' => 'Certificate request rejected successfully.']);
+    }
 } 

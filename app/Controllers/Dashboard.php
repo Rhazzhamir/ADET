@@ -38,7 +38,10 @@ class Dashboard extends BaseController
             'recent_residents' => $this->residentModel->orderBy('created_at', 'DESC')->limit(5)->find(),
             'recent_households' => $this->householdModel->orderBy('created_at', 'DESC')->limit(5)->find(),
             'recent_budgets' => $this->budgetModel->orderBy('created_at', 'DESC')->limit(5)->find(),
-            'recent_expenses' => $this->expenseModel->orderBy('created_at', 'DESC')->limit(5)->find()
+            'recent_expenses' => $this->expenseModel->orderBy('created_at', 'DESC')->limit(5)->find(),
+            'total_rejected_certificates' => $this->certificateModel->where('status', 'rejected')->countAllResults(),
+            'total_approved_certificates' => $this->certificateModel->where('status', 'approved')->countAllResults(),
+            'total_pending_certificates' => $this->certificateModel->where('status', 'pending')->countAllResults(),
         ];
 
         // Calculate remaining balance

@@ -34,7 +34,8 @@
                 </div>
             </div>
             <div class="col-lg-4">
-                <div class="small-box <?= isset($remaining_balance) && $remaining_balance < 0 ? 'bg-danger' : 'bg-success' ?>">
+                <div
+                    class="small-box <?= isset($remaining_balance) && $remaining_balance < 0 ? 'bg-danger' : 'bg-success' ?>">
                     <div class="inner">
                         <h3>₱<?= isset($remaining_balance) ? number_format($remaining_balance, 2) : '0.00' ?></h3>
                         <p>Remaining Balance</p>
@@ -48,6 +49,52 @@
                 </div>
             </div>
         </div>
+
+        <div class="row">
+            <div class="col-lg-4">
+                <div class="small-box bg-danger">
+                    <div class="inner">
+                        <h3><?= $total_rejected_certificates ?></h3>
+                        <p>Total Rejected</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-times-circle"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="small-box bg-success">
+                    <div class="inner">
+                        <h3><?= $total_approved_certificates ?></h3>
+                        <p>Total Approved</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-check-circle"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+            <div class="col-lg-4">
+                <div class="small-box bg-warning">
+                    <div class="inner">
+                        <h3><?= $total_pending_certificates ?></h3>
+                        <p>Total Pending</p>
+                    </div>
+                    <div class="icon">
+                        <i class="fas fa-hourglass-half"></i>
+                    </div>
+                    <a href="#" class="small-box-footer">
+                        More info <i class="fas fa-arrow-circle-right"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+
 
         <!-- Main Content -->
         <div class="row">
@@ -96,16 +143,16 @@
                                 </thead>
                                 <tbody>
                                     <?php if (isset($recent_residents) && !empty($recent_residents)): ?>
-                                        <?php foreach ($recent_residents as $resident): ?>
-                                            <tr>
-                                                <td><?= esc($resident['full_name']) ?></td>
-                                                <td><?= date('M d, Y', strtotime($resident['created_at'])) ?></td>
-                                            </tr>
-                                        <?php endforeach; ?>
+                                    <?php foreach ($recent_residents as $resident): ?>
+                                    <tr>
+                                        <td><?= esc($resident['full_name']) ?></td>
+                                        <td><?= date('M d, Y', strtotime($resident['created_at'])) ?></td>
+                                    </tr>
+                                    <?php endforeach; ?>
                                     <?php else: ?>
-                                        <tr>
-                                            <td colspan="2" class="text-center">No recent registrations</td>
-                                        </tr>
+                                    <tr>
+                                        <td colspan="2" class="text-center">No recent registrations</td>
+                                    </tr>
                                     <?php endif; ?>
                                 </tbody>
                             </table>
@@ -126,33 +173,34 @@
                     <div class="card-body">
                         <div class="timeline">
                             <?php if (isset($recent_residents) && !empty($recent_residents)): ?>
-                                <div class="time-label">
-                                    <span class="bg-info">Recent Activities</span>
-                                </div>
-                                <?php foreach ($recent_residents as $resident): ?>
-                                <div>
-                                    <i class="fas fa-user bg-primary"></i>
-                                    <div class="timeline-item">
-                                        <span class="time"><i class="fas fa-clock"></i> <?= date('H:i', strtotime($resident['created_at'])) ?></span>
-                                        <h3 class="timeline-header">New Resident Registration</h3>
-                                        <div class="timeline-body">
-                                            <?= esc($resident['full_name']) ?> has been registered as a new resident.
-                                        </div>
+                            <div class="time-label">
+                                <span class="bg-info">Recent Activities</span>
+                            </div>
+                            <?php foreach ($recent_residents as $resident): ?>
+                            <div>
+                                <i class="fas fa-user bg-primary"></i>
+                                <div class="timeline-item">
+                                    <span class="time"><i class="fas fa-clock"></i>
+                                        <?= date('H:i', strtotime($resident['created_at'])) ?></span>
+                                    <h3 class="timeline-header">New Resident Registration</h3>
+                                    <div class="timeline-body">
+                                        <?= esc($resident['full_name']) ?> has been registered as a new resident.
                                     </div>
                                 </div>
-                                <?php endforeach; ?>
+                            </div>
+                            <?php endforeach; ?>
                             <?php else: ?>
-                                <div class="time-label">
-                                    <span class="bg-info">No Recent Activities</span>
-                                </div>
-                                <div>
-                                    <i class="fas fa-info bg-info"></i>
-                                    <div class="timeline-item">
-                                        <div class="timeline-body">
-                                            No recent activities to display.
-                                        </div>
+                            <div class="time-label">
+                                <span class="bg-info">No Recent Activities</span>
+                            </div>
+                            <div>
+                                <i class="fas fa-info bg-info"></i>
+                                <div class="timeline-item">
+                                    <div class="timeline-body">
+                                        No recent activities to display.
                                     </div>
                                 </div>
+                            </div>
                             <?php endif; ?>
                         </div>
                     </div>
@@ -161,4 +209,4 @@
         </div>
     </div>
 </div>
-<?= $this->endSection() ?> 
+<?= $this->endSection() ?>
